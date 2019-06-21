@@ -94,6 +94,9 @@ dependencies {
     kapt(Deps.Libs.roomCompiler)
     implementation(Deps.Libs.roomRxJava)
 
+    // logging
+    implementation(Deps.Libs.timber)
+
     // date-time
     implementation(Deps.Libs.threetenabp)
 

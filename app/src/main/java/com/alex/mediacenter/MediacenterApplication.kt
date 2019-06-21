@@ -11,6 +11,7 @@ import com.alex.mediacenter.bus.RxBus
 import com.alex.mediacenter.player.MediaPlayer
 import com.alex.mediacenter.receiver.ConnectivityReceiver
 import com.squareup.leakcanary.LeakCanary
+import timber.log.Timber
 
 class MediacenterApplication : Application(), LifecycleObserver {
 
@@ -43,6 +44,7 @@ class MediacenterApplication : Application(), LifecycleObserver {
 
         setupConnectivityReceiver()
         setupMediaPlayer()
+        setupTimber()
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
     }
@@ -63,5 +65,11 @@ class MediacenterApplication : Application(), LifecycleObserver {
 
     private fun setupMediaPlayer() {
         MediaPlayer.init(this)
+    }
+
+    private fun setupTimber() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 }

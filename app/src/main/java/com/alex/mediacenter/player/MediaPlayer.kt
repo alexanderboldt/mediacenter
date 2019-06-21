@@ -13,6 +13,7 @@ import com.google.android.exoplayer2.upstream.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 object MediaPlayer {
@@ -42,42 +43,29 @@ object MediaPlayer {
                 RxBus.publish(currentState)
 
                 disposePosition()
+
+                Timber.d(State.ERROR.name)
             }
 
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                when (playbackState) {
-                    Player.STATE_IDLE -> {
-                        currentState = MediaPlayerEvent(State.IDLE)
-                        RxBus.publish(currentState)
-
-                        disposePosition()
-                    }
-                    Player.STATE_BUFFERING -> {
-                        currentState = currentState.copy(state = State.BUFFER)
-                        RxBus.publish(currentState)
-
-                        disposePosition()
-                    }
+                currentState = when (playbackState) {
+                    Player.STATE_IDLE -> MediaPlayerEvent(State.IDLE)
+                    Player.STATE_BUFFERING -> currentState.copy(state = State.BUFFER)
                     Player.STATE_READY -> {
-                        if (playWhenReady) {
-                            currentState = currentState.copy(state = State.PLAY, duration = player.duration)
-                            RxBus.publish(currentState)
-
-                            observePosition()
-                        } else {
-                            currentState = currentState.copy(state = State.PAUSE)
-                            RxBus.publish(currentState)
-
-                            disposePosition()
+                        when (playWhenReady) {
+                            true -> currentState.copy(state = State.PLAY, duration = player.duration)
+                            false -> currentState.copy(state = State.PAUSE)
                         }
                     }
-                    Player.STATE_ENDED -> {
-                        currentState = currentState.copy(state = State.END)
-                        RxBus.publish(currentState)
-
-                        disposePosition()
-                    }
+                    Player.STATE_ENDED -> currentState.copy(state = State.END)
+                    else -> MediaPlayerEvent(State.ERROR)
                 }
+
+                RxBus.publish(currentState)
+
+                if (playbackState == Player.STATE_READY && playWhenReady) observePosition() else disposePosition()
+
+                Timber.d(currentState.toString())
             }
         })
     }
@@ -106,7 +94,6 @@ object MediaPlayer {
 
     fun seek(position: Long) {
         player.seekTo(position)
-        player.next()
     }
 
     fun release() {
@@ -117,12 +104,15 @@ object MediaPlayer {
 
     private fun observePosition() {
         positionDisposable = Observable
-            .interval(1, TimeUnit.SECONDS)
+            .interval(0,1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .map { player.currentPosition to player.duration }
             .subscribe {
                 currentState = currentState.copy(state = State.PLAY, position = it.first, duration = it.second)
+
                 RxBus.publish(currentState)
+
+                Timber.d(currentState.toString())
             }
     }
 
