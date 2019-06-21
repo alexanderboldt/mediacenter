@@ -1,3 +1,3 @@
 # mediacenter
 
-Testing App multimedia-functionality.
+Testing App with multimedia-functionality.
