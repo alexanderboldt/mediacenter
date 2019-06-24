@@ -13,6 +13,10 @@ class DummyController : BaseController<ControllerDummyBinding>(R.layout.controll
     // ----------------------------------------------------------------------------
 
     override fun onSetupViewBinding() {
+        disposables += binding.button3.clicks().subscribe {
+            viewModel.clickOnReleasePlayer()
+        }
+
         disposables += binding.button.clicks().subscribe {
             viewModel.clickOnButtonOne()
         }

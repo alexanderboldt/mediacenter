@@ -5,6 +5,10 @@ import com.alex.mediacenter.player.MediaPlayer
 
 class DummyViewModel : BaseViewModel() {
 
+    fun clickOnReleasePlayer() {
+        MediaPlayer.release()
+    }
+
     fun clickOnButtonOne() {
         MediaPlayer.play(
             "http://mp3.podcast.hr-online.de/mp3/podcast/lateline/lateline_20190611_81784966.mp3",
