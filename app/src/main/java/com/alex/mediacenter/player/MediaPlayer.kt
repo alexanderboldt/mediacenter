@@ -24,7 +24,7 @@ object MediaPlayer {
 
     // ----------------------------------------------------------------------------
 
-    lateinit var currentState: MediaPlayerEvent
+    var currentState = MediaPlayerEvent(State.IDLE)
 
     enum class State {
         IDLE,

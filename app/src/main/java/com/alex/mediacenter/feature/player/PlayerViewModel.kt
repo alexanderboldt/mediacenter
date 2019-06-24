@@ -116,7 +116,7 @@ class PlayerViewModel : BaseViewModel() {
     // ----------------------------------------------------------------------------
 
     fun clickOnPlay() {
-        if (MediaPlayer.currentState.state == MediaPlayer.State.END) {
+        if (MediaPlayer.currentState?.state == MediaPlayer.State.END) {
             MediaPlayer.seek(0)
         }
         MediaPlayer.resume()
