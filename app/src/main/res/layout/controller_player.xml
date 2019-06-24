@@ -44,6 +44,7 @@
 					android:layout_height="20dp"
 					android:layout_gravity="center"
 					android:progressTint="@color/colorPrimary"
+					android:progressBackgroundTint="#fff"
 					tools:max="100"
 					tools:progress="50"
 					style="?android:attr/progressBarStyleHorizontal"/>
@@ -80,11 +81,25 @@
 				android:gravity="start|center_vertical"
 				android:textSize="18sp"
 				android:layout_margin="12dp"
+				android:layout_marginEnd="12dp"
 				app:layout_constraintStart_toEndOf="@+id/imageView_preview_play"
 				app:layout_constraintTop_toTopOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintEnd_toStartOf="@+id/imageView_preview_cover"
 				app:layout_constraintBottom_toBottomOf="parent"
 				tools:text="Band"/>
+			
+			<com.alex.mediacenter.ui.GlideImageView
+				android:id="@+id/imageView_preview_cover"
+				android:layout_width="50dp"
+				android:layout_height="0dp"
+				android:layout_marginTop="12dp"
+				android:layout_marginEnd="12dp"
+				android:layout_marginBottom="12dp"
+				app:srcCompat="@drawable/ic_pause"
+				app:layout_constraintStart_toEndOf="@+id/textView_preview_title"
+				app:layout_constraintTop_toTopOf="parent"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintBottom_toBottomOf="parent"/>
 		
 		</androidx.constraintlayout.widget.ConstraintLayout>
 		
@@ -162,6 +177,7 @@
 					android:layout_height="20dp"
 					android:layout_gravity="center"
 					android:progressTint="@color/colorPrimary"
+					android:progressBackgroundTint="#fff"
 					tools:max="100"
 					tools:progress="50"
 					style="?android:attr/progressBarStyleHorizontal"/>

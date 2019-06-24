@@ -22,7 +22,9 @@ object MediaPlayer {
 
     private var positionDisposable: Disposable? = null
 
-    private lateinit var currentState: MediaPlayerEvent
+    // ----------------------------------------------------------------------------
+
+    lateinit var currentState: MediaPlayerEvent
 
     enum class State {
         IDLE,

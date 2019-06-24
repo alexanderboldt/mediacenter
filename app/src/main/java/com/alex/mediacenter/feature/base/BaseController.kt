@@ -13,7 +13,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import io.reactivex.disposables.CompositeDisposable
 import work.beltran.conductorviewmodel.ViewModelController
 
-abstract class BaseController<T : ViewDataBinding>(@LayoutRes private val layout: Int) : ViewModelController(), LifecycleObserver {
+open class BaseController<T : ViewDataBinding>(@LayoutRes private val layout: Int) : ViewModelController(), LifecycleObserver {
 
     protected lateinit var binding: T
 
@@ -58,7 +58,7 @@ abstract class BaseController<T : ViewDataBinding>(@LayoutRes private val layout
 
     // ----------------------------------------------------------------------------
 
-    abstract fun onSetupView()
-    abstract fun onSetupViewBinding()
-    abstract fun onSetupViewModelBinding()
+    open fun onSetupView() {}
+    open fun onSetupViewBinding() {}
+    open fun onSetupViewModelBinding() {}
 }
