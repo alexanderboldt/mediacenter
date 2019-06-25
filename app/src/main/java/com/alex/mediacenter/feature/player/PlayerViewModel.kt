@@ -40,41 +40,15 @@ class PlayerViewModel : BaseViewModel() {
                     (playerState as MutableLiveData).postValue(state)
                 }
                 MediaPlayer.State.BUFFER -> {
-                    val state = PlayerState(
-                        false,
-                        true,
-                        it.title,
-                        0,
-                        0,
-                        false,
-                        true,
-                        it.title,
-                        "00:00:00",
-                        0,
-                        0,
-                        "00:00:00",
-                        it.imageUrl
+                    val state = playerState.value?.copy(
+                        previewProgressBarProgress = it.position.toInt(),
+                        progressBarProgress = it.position.toInt(),
+                        positionText = convertTimestampToString(it.position / 1000, it.duration / 100 >= 3600)
                     )
 
                     (playerState as MutableLiveData).postValue(state)
                 }
                 MediaPlayer.State.PLAY -> {
-
-                    // convert from milliseconds to seconds
-                    val position = it.position / 1000
-                    val duration = it.duration / 1000
-
-                    // check if duration is greater than one hour
-                    val positionText = when (duration > 3600) {
-                        true -> String.format("%02d:%02d:%02d", position / 3600, (position % 3600) / 60, (position % 60))
-                        false -> String.format("%02d:%02d", (position % 3600) / 60, (position % 60))
-                    }
-
-                    val durationText = when (duration > 3600) {
-                        true -> String.format("%02d:%02d:%02d", duration / 3600, (duration % 3600) / 60, (duration % 60))
-                        false -> String.format("%02d:%02d", (duration % 3600) / 60, (duration % 60))
-                    }
-
                     val state = PlayerState(
                         false,
                         true,
@@ -84,10 +58,10 @@ class PlayerViewModel : BaseViewModel() {
                         false,
                         true,
                         it.title,
-                        positionText,
+                        convertTimestampToString(it.position / 1000, it.duration / 1000 >= 3600),
                         it.position.toInt(),
                         it.duration.toInt(),
-                        durationText,
+                        convertTimestampToString(it.duration / 1000, it.duration / 1000 >= 3600),
                         it.imageUrl
                     )
 
@@ -116,7 +90,7 @@ class PlayerViewModel : BaseViewModel() {
     // ----------------------------------------------------------------------------
 
     fun clickOnPlay() {
-        if (MediaPlayer.currentState?.state == MediaPlayer.State.END) {
+        if (MediaPlayer.currentState.state == MediaPlayer.State.END) {
             MediaPlayer.seek(0)
         }
         MediaPlayer.resume()
@@ -124,5 +98,24 @@ class PlayerViewModel : BaseViewModel() {
 
     fun clickOnPause() {
         MediaPlayer.pause()
+    }
+
+    fun seekStart() {
+    }
+
+    fun seek(timestamp: Long) {
+    }
+
+    fun seekStop(timestamp: Long) {
+        MediaPlayer.seek(timestamp)
+    }
+
+    // ----------------------------------------------------------------------------
+
+    private fun convertTimestampToString(timestamp: Long, greaterThanOneHour: Boolean): String {
+        return when (greaterThanOneHour) {
+            true -> String.format("%02d:%02d:%02d", timestamp / 3600, (timestamp % 3600) / 60, (timestamp % 60))
+            false -> String.format("%02d:%02d", (timestamp % 3600) / 60, (timestamp % 60))
+        }
     }
 }

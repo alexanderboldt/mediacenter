@@ -36,7 +36,7 @@
 			<LinearLayout
 				xmlns:android="http://schemas.android.com/apk/res/android"
 				android:layout_width="match_parent"
-				android:layout_height="3dp">
+				android:layout_height="4dp">
 				
 				<ProgressBar
 					android:id="@+id/progressBar_preview"
@@ -152,46 +152,38 @@
 			
 			<TextView
 				android:id="@+id/textView_position"
-				android:layout_width="70dp"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textColor="#ccc"
 				android:textSize="14sp"
 				android:text="00:00:00"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toBottomOf="@+id/textView_subtitle"
-				app:layout_constraintEnd_toStartOf="@+id/linearLayout_progress"
+				app:layout_constraintEnd_toStartOf="@+id/seekBar"
 				app:layout_constraintBottom_toTopOf="@+id/imageView_play" />
 			
-			<LinearLayout
-				android:id="@+id/linearLayout_progress"
+			<androidx.appcompat.widget.AppCompatSeekBar
+				android:id="@+id/seekBar"
 				android:layout_width="0dp"
-				android:layout_height="3dp"
+				android:layout_height="wrap_content"
+				android:indeterminate="false"
+				android:progressTint="@color/colorPrimary"
+				android:progressBackgroundTint="#fff"
+				android:thumbTint="@color/colorPrimary"
 				app:layout_constraintStart_toEndOf="@+id/textView_position"
 				app:layout_constraintTop_toBottomOf="@+id/textView_subtitle"
 				app:layout_constraintEnd_toStartOf="@+id/textView_duration"
-				app:layout_constraintBottom_toTopOf="@+id/imageView_play">
-				
-				<ProgressBar
-					android:id="@+id/progressBar"
-					android:layout_width="match_parent"
-					android:layout_height="20dp"
-					android:layout_gravity="center"
-					android:progressTint="@color/colorPrimary"
-					android:progressBackgroundTint="#fff"
-					tools:max="100"
-					tools:progress="50"
-					style="?android:attr/progressBarStyleHorizontal"/>
-			</LinearLayout>
+				app:layout_constraintBottom_toTopOf="@+id/imageView_play"/>
 			
 			<TextView
 				android:id="@+id/textView_duration"
-				android:layout_width="70dp"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textColor="#ccc"
 				android:textSize="14sp"
 				android:gravity="end"
 				android:text="00:00:00"
-				app:layout_constraintStart_toEndOf="@+id/linearLayout_progress"
+				app:layout_constraintStart_toEndOf="@+id/seekBar"
 				app:layout_constraintTop_toBottomOf="@+id/textView_subtitle"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintBottom_toTopOf="@+id/imageView_play" />

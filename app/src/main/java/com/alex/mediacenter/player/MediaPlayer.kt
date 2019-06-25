@@ -52,7 +52,7 @@ object MediaPlayer {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 currentState = when (playbackState) {
                     Player.STATE_IDLE -> MediaPlayerEvent(State.IDLE)
-                    Player.STATE_BUFFERING -> currentState.copy(state = State.BUFFER)
+                    Player.STATE_BUFFERING -> currentState.copy(position = player.currentPosition, duration = player.duration, state = State.BUFFER)
                     Player.STATE_READY -> {
                         when (playWhenReady) {
                             true -> currentState.copy(state = State.PLAY, duration = player.duration)

@@ -8,6 +8,7 @@ import com.alex.mediacenter.feature.base.BaseController
 import com.alex.mediacenter.util.observe
 import com.alex.mediacenter.util.plusAssign
 import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding2.widget.*
 import io.reactivex.Observable
 
 class PlayerController : BaseController<ControllerPlayerBinding>(R.layout.controller_player) {
@@ -28,6 +29,14 @@ class PlayerController : BaseController<ControllerPlayerBinding>(R.layout.contro
             .subscribe {
                 viewModel.clickOnPause()
             }
+
+        disposables += binding.seekBar.changeEvents().subscribe {
+            when (it) {
+                is SeekBarStartChangeEvent -> viewModel.seekStart()
+                is SeekBarStopChangeEvent -> viewModel.seekStop(it.view().progress.toLong())
+                is SeekBarProgressChangeEvent -> if (it.fromUser()) viewModel.seek(it.progress().toLong())
+            }
+        }
     }
 
     override fun onSetupViewModelBinding() {
@@ -46,8 +55,8 @@ class PlayerController : BaseController<ControllerPlayerBinding>(R.layout.contro
             binding.imageViewPause.visibility = if (state.isPauseButtonVisible) View.VISIBLE else View.INVISIBLE
             binding.textViewTitle.text = state.title
             binding.textViewPosition.text = state.positionText
-            binding.progressBar.progress = state.progressBarProgress
-            binding.progressBar.max = state.progressBarMax
+            binding.seekBar.progress = state.progressBarProgress
+            binding.seekBar.max = state.progressBarMax
             binding.textViewDuration.text = state.durationText
 
             if (state.coverUrl == null) {
