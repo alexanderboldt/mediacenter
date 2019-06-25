@@ -109,6 +109,8 @@ dependencies {
 
     // image
     implementation(Deps.Libs.glide)
+    kapt(Deps.Libs.glideCompiler)
+    implementation(Deps.Libs.glideOkHttpIntegration)
     implementation(Deps.Libs.glideTransformations)
 
     // fragments-alternative

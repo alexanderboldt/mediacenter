@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.AttributeSet
 import android.widget.ImageView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -16,7 +15,7 @@ class GlideImageView @JvmOverloads constructor(context: Context, attrs: Attribut
         if (blur) transformations = transformations.plus(BlurTransformation(25, 20))
         transformations = transformations.plus(CenterCrop())
 
-        Glide.with(context)
+        GlideApp.with(context)
             .load(url)
             .transform(*transformations)
             .into(this)
