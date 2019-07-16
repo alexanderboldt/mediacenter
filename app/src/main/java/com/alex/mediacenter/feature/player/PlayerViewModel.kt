@@ -2,16 +2,15 @@ package com.alex.mediacenter.feature.player
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alex.mediacenter.bus.BottomSheetEvent
 import com.alex.mediacenter.bus.MediaPlayerEvent
 import com.alex.mediacenter.bus.RxBus
-import com.alex.mediacenter.feature.base.BaseViewModel
 import com.alex.mediacenter.player.MediaPlayer
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class PlayerViewModel : BaseViewModel() {
+class PlayerViewModel : ViewModel() {
 
     val previewAlphaState: LiveData<Float> = MutableLiveData()
     val playerState: LiveData<PlayerState> = MutableLiveData()

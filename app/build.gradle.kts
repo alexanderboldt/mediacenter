@@ -87,15 +87,14 @@ dependencies {
     kapt(Deps.AndroidX.lifecycleCompiler)
     implementation(Deps.AndroidX.lifecycleViewModelKtx)
 
+    implementation(Deps.AndroidX.room)
+    kapt(Deps.AndroidX.roomCompiler)
+    implementation(Deps.AndroidX.roomRxJava)
+
     // 3rd-party libraries
 
     // audio
     implementation(Deps.Libs.exoplayer)
-
-    // database
-    implementation(Deps.Libs.room)
-    kapt(Deps.Libs.roomCompiler)
-    implementation(Deps.Libs.roomRxJava)
 
     // logging
     implementation(Deps.Libs.timber)
@@ -136,5 +135,4 @@ dependencies {
 
     // leak-detection
     debugImplementation(Deps.Libs.leakCanaryDebug)
-    releaseImplementation(Deps.Libs.leakCanaryRelease)
 }
