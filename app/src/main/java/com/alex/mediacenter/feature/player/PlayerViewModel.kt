@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alex.mediacenter.bus.BottomSheetEvent
+import com.alex.mediacenter.bus.BottomSheetExpandEvent
+import com.alex.mediacenter.bus.BottomSheetOffsetEvent
 import com.alex.mediacenter.bus.MediaPlayerEvent
 import com.alex.mediacenter.bus.RxBus
 import com.alex.mediacenter.player.MediaPlayer
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 class PlayerViewModel : ViewModel() {
 
     val previewAlphaState: LiveData<Float> = MutableLiveData()
+    val playerExpandState: LiveData<Boolean> = MutableLiveData()
     val playerState: LiveData<PlayerState> = MutableLiveData()
     val messageState: LiveData<String> = MutableLiveData()
 
@@ -83,7 +85,7 @@ class PlayerViewModel : ViewModel() {
                 }
             }
 
-            RxBus.listen(BottomSheetEvent::class.java).subscribe {
+            RxBus.listen(BottomSheetOffsetEvent::class.java).subscribe {
                 if (it.offset != null) {
                     (previewAlphaState as MutableLiveData).postValue(1 - it.offset!!)
                 }
@@ -92,6 +94,11 @@ class PlayerViewModel : ViewModel() {
     }
 
     // ----------------------------------------------------------------------------
+
+    fun clickOnPreview() {
+        RxBus.publish(BottomSheetExpandEvent(true))
+        (playerExpandState as MutableLiveData).postValue(true)
+    }
 
     fun clickOnPlay() {
         if (MediaPlayer.currentState.state == MediaPlayer.State.END) {

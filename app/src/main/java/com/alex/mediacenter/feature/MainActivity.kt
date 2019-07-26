@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.alex.mediacenter.R
-import com.alex.mediacenter.bus.BottomSheetEvent
+import com.alex.mediacenter.bus.BottomSheetExpandEvent
+import com.alex.mediacenter.bus.BottomSheetOffsetEvent
 import com.alex.mediacenter.bus.RxBus
 import com.alex.mediacenter.databinding.ActivityMainBinding
 import com.alex.mediacenter.feature.dummy.DummyController
@@ -41,13 +42,15 @@ class MainActivity : AppCompatActivity() {
         val behavior = BottomSheetBehavior.from(binding.changeHandlerFrameLayoutBottomSheet)
         behavior.setBottomSheetCallback(object:BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                RxBus.publish(BottomSheetEvent(null, slideOffset))
+                RxBus.publish(BottomSheetOffsetEvent(slideOffset))
             }
 
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                RxBus.publish(BottomSheetEvent(newState, null))
-            }
+            override fun onStateChanged(bottomSheet: View, newState: Int) {}
         })
+
+        val disposable = RxBus.listen(BottomSheetExpandEvent::class.java).subscribe { event ->
+            behavior.state = if (event.isExpanded) BottomSheetBehavior.STATE_EXPANDED else BottomSheetBehavior.STATE_COLLAPSED
+        }
     }
 
     override fun onBackPressed() {

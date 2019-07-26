@@ -18,6 +18,10 @@ class PlayerController : BaseController<ControllerPlayerBinding>(R.layout.contro
     // ----------------------------------------------------------------------------
 
     override fun onSetupViewBinding() {
+        disposables += binding.constraintLayoutPreview.clicks().subscribe {
+            viewModel.clickOnPreview()
+        }
+
         disposables += Observable
             .merge(binding.imageViewPreviewPlay.clicks(), binding.imageViewPlay.clicks())
             .subscribe {
