@@ -103,6 +103,9 @@ dependencies {
     kapt(Deps.AndroidX.roomCompiler)
     implementation(Deps.AndroidX.roomRxJava)
 
+    // core-library
+    implementation(files("libs/android-core-1.0.aar"))
+
     // 3rd-party libraries
 
     // audio

@@ -6,8 +6,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.alex.core.bus.RxBus
 import com.alex.mediacenter.bus.AppEvent
-import com.alex.mediacenter.bus.RxBus
 import com.alex.mediacenter.player.MediaPlayer
 import com.alex.mediacenter.receiver.ConnectivityReceiver
 import leakcanary.LeakCanary

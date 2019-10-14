@@ -4,10 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import com.alex.core.bus.RxBus
 import com.alex.mediacenter.R
 import com.alex.mediacenter.bus.BottomSheetExpandEvent
 import com.alex.mediacenter.bus.BottomSheetOffsetEvent
-import com.alex.mediacenter.bus.RxBus
 import com.alex.mediacenter.databinding.ActivityMainBinding
 import com.alex.mediacenter.feature.dummy.DummyController
 import com.alex.mediacenter.feature.player.PlayerController

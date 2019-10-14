@@ -2,8 +2,8 @@ package com.alex.mediacenter.player
 
 import android.content.Context
 import android.net.Uri
+import com.alex.core.bus.RxBus
 import com.alex.mediacenter.bus.MediaPlayerEvent
-import com.alex.mediacenter.bus.RxBus
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ExtractorMediaSource
