@@ -37,6 +37,8 @@ object Deps {
     }
 
     object Libs {
+        val androidCore = "com.alex:android-core:1.0"
+
         val exoplayer = "com.google.android.exoplayer:exoplayer:2.10.1"
 
         val dagger = "com.google.dagger:dagger:2.23.2"
