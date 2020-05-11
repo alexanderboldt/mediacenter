@@ -13,11 +13,11 @@ object Deps {
         val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
         val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
 
-        val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime:2.0.0"
-        val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.0.0"
-        val lifecycleCommonJava = "androidx.lifecycle:lifecycle-common-java8:2.0.0"
-        val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:2.0.0"
-        val lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0-beta01"
+        val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime:2.2.0"
+        val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+        val lifecycleCommonJava = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
+        val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:2.2.0"
+        val lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     }
 
     object Test {
@@ -54,8 +54,7 @@ object Deps {
         val glideTransformations = "jp.wasabeef:glide-transformations:4.0.0"
 
         val conductor = "com.bluelinelabs:conductor:2.1.5"
-        val conductorSupport = "com.bluelinelabs:conductor-support:2.1.5"
-        val conductorViewModel = "com.github.miquelbeltran:conductor-viewmodel:1.0.3"
+        val conductorLifecycle = "com.bluelinelabs:conductor-archlifecycle:2.1.5"
 
         val parcel = "org.parceler:parceler-api:1.1.12"
         val parcelCompiler = "org.parceler:parceler:1.1.12"

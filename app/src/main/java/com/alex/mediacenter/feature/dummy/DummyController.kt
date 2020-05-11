@@ -9,7 +9,7 @@ import com.jakewharton.rxbinding3.view.clicks
 
 class DummyController : BaseController<ControllerDummyBinding>() {
 
-    private val viewModel by lazy { viewModelProvider().get(DummyViewModel::class.java) }
+    private val viewModel by lazy { getViewModel(DummyViewModel::class.java) }
 
     // ----------------------------------------------------------------------------
 

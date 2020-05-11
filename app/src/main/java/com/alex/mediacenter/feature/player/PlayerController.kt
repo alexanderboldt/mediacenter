@@ -17,7 +17,7 @@ import io.reactivex.Observable
 
 class PlayerController : BaseController<ControllerPlayerBinding>() {
 
-    private val viewModel by lazy { viewModelProvider().get(PlayerViewModel::class.java) }
+    private val viewModel by lazy { getViewModel(PlayerViewModel::class.java) }
 
     // ----------------------------------------------------------------------------
 

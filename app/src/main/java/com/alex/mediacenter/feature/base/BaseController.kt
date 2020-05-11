@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.annotation.NonNull
+import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
+import com.bluelinelabs.conductor.archlifecycle.LifecycleController
 import io.reactivex.disposables.CompositeDisposable
-import work.beltran.conductorviewmodel.ViewModelController
 
-abstract class BaseController<VB : ViewBinding> : ViewModelController(), LifecycleObserver {
+abstract class BaseController<VB : ViewBinding> : LifecycleController(), LifecycleObserver {
 
     protected lateinit var binding: VB
 
@@ -20,6 +19,14 @@ abstract class BaseController<VB : ViewBinding> : ViewModelController(), Lifecyc
 
     protected val context: Context
         get() = activity as Context
+
+    private val viewModelStore = ViewModelStore()
+
+    // ----------------------------------------------------------------------------
+
+    init {
+        retainViewMode = RetainViewMode.RETAIN_DETACH
+    }
 
     // ----------------------------------------------------------------------------
 
@@ -79,4 +86,18 @@ abstract class BaseController<VB : ViewBinding> : ViewModelController(), Lifecyc
     open fun onSetupView() {}
     open fun onViewBinding() {}
     open fun onViewModelBinding() {}
+
+    fun <VM : ViewModel> getViewModel(@NonNull modelClass: Class<VM>): VM {
+        return viewModelProvider().get(modelClass)
+    }
+
+    // ----------------------------------------------------------------------------
+
+    private fun viewModelProvider(): ViewModelProvider {
+        return viewModelProvider(ViewModelProvider.AndroidViewModelFactory(activity!!.application))
+    }
+
+    private fun viewModelProvider(factory: ViewModelProvider.NewInstanceFactory): ViewModelProvider {
+        return ViewModelProvider(viewModelStore, factory)
+    }
 }
