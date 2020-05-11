@@ -4,7 +4,7 @@ import com.alex.mediacenter.R
 import com.alex.mediacenter.databinding.ControllerDummyBinding
 import com.alex.mediacenter.feature.base.BaseController
 import com.alex.mediacenter.util.plusAssign
-import com.jakewharton.rxbinding2.view.clicks
+import com.jakewharton.rxbinding3.view.clicks
 
 class DummyController : BaseController<ControllerDummyBinding>(R.layout.controller_dummy) {
 

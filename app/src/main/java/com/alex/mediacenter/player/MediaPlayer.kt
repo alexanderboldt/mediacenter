@@ -6,9 +6,7 @@ import com.alex.core.bus.RxBus
 import com.alex.mediacenter.bus.MediaPlayerEvent
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -38,9 +36,9 @@ object MediaPlayer {
     // ----------------------------------------------------------------------------
 
     fun init(context: Context) {
-        player = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector(AdaptiveTrackSelection.Factory(DefaultBandwidthMeter())))
+        player = SimpleExoPlayer.Builder(context).build()
         player.addListener(object: Player.EventListener {
-            override fun onPlayerError(error: ExoPlaybackException?) {
+            override fun onPlayerError(error: ExoPlaybackException) {
                 currentState = MediaPlayerEvent(State.ERROR)
                 RxBus.publish(currentState)
 
@@ -76,13 +74,13 @@ object MediaPlayer {
         val videoURI = Uri.parse(streamUrl)
         val dataSourceFactory = DefaultHttpDataSourceFactory("exoplayer")
         val extractorsFactory = DefaultExtractorsFactory()
-        val mediaSource = ExtractorMediaSource(videoURI, dataSourceFactory, extractorsFactory, null, null)
+        val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory).createMediaSource(videoURI)
 
-        currentState = MediaPlayerEvent(MediaPlayer.State.IDLE, 0, 0, title, imageUrl)
+        currentState = MediaPlayerEvent(State.IDLE, 0, 0, title, imageUrl)
 
         player.apply {
             prepare(mediaSource)
-            player.playWhenReady = true
+            playWhenReady = true
         }
     }
 

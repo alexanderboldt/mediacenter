@@ -7,8 +7,11 @@ import com.alex.mediacenter.databinding.ControllerPlayerBinding
 import com.alex.mediacenter.feature.base.BaseController
 import com.alex.mediacenter.util.observe
 import com.alex.mediacenter.util.plusAssign
-import com.jakewharton.rxbinding2.view.clicks
-import com.jakewharton.rxbinding2.widget.*
+import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding3.widget.SeekBarProgressChangeEvent
+import com.jakewharton.rxbinding3.widget.SeekBarStartChangeEvent
+import com.jakewharton.rxbinding3.widget.SeekBarStopChangeEvent
+import com.jakewharton.rxbinding3.widget.changeEvents
 import io.reactivex.Observable
 
 class PlayerController : BaseController<ControllerPlayerBinding>(R.layout.controller_player) {
@@ -34,11 +37,11 @@ class PlayerController : BaseController<ControllerPlayerBinding>(R.layout.contro
                 viewModel.clickOnPause()
             }
 
-        disposables += binding.seekBar.changeEvents().subscribe {
-            when (it) {
+        disposables += binding.seekBar.changeEvents().subscribe { event ->
+            when (event) {
                 is SeekBarStartChangeEvent -> viewModel.seekStart()
-                is SeekBarStopChangeEvent -> viewModel.seekStop(it.view().progress.toLong())
-                is SeekBarProgressChangeEvent -> if (it.fromUser()) viewModel.seek(it.progress().toLong())
+                is SeekBarStopChangeEvent -> viewModel.seekStop(event.view.progress.toLong())
+                is SeekBarProgressChangeEvent -> if (event.fromUser) viewModel.seek(event.progress.toLong())
             }
         }
     }

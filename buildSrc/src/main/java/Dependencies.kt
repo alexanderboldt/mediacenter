@@ -2,7 +2,7 @@ object Deps {
     object Config {
         val applicationId = "com.alex.mediacenter"
         val minSdk = 21
-        val sdk = 28
+        val sdk = 29
         val code = 1
         val name = "1.0"
     }
@@ -18,10 +18,6 @@ object Deps {
         val lifecycleCommonJava = "androidx.lifecycle:lifecycle-common-java8:2.0.0"
         val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:2.0.0"
         val lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0-beta01"
-
-        val room = "androidx.room:room-runtime:2.1.0"
-        val roomCompiler = "androidx.room:room-compiler:2.1.0"
-        val roomRxJava = "androidx.room:room-rxjava2:2.1.0"
     }
 
     object Test {
@@ -37,14 +33,9 @@ object Deps {
     }
 
     object Libs {
-        val androidCore = "com.alex:android-core:1.0"
+        val androidCore = "com.alex:android-core:1.3.0"
 
-        val exoplayer = "com.google.android.exoplayer:exoplayer:2.10.1"
-
-        val dagger = "com.google.dagger:dagger:2.23.2"
-        val daggerCompiler = "com.google.dagger:dagger-compiler:2.23.2"
-
-        val ahbottomnavigation = "com.aurelhubert:ahbottomnavigation:2.3.4"
+        val exoplayer = "com.google.android.exoplayer:exoplayer:2.11.4"
 
         val timber = "com.jakewharton.timber:timber:4.7.1"
 
@@ -72,10 +63,8 @@ object Deps {
         val rxjava = "io.reactivex.rxjava2:rxjava:2.2.10"
         val rxandroid = "io.reactivex.rxjava2:rxandroid:2.1.1"
 
-        val rxbinding = "com.jakewharton.rxbinding2:rxbinding-kotlin:2.2.0"
-        val rxbindingAppcompat = "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:2.2.0"
-        val rxbindingSupport = "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:2.2.0"
+        val rxbinding = "com.jakewharton.rxbinding3:rxbinding:3.1.0"
 
-        val leakCanaryDebug = "com.squareup.leakcanary:leakcanary-android:2.0-alpha-3"
+        val leakCanaryDebug = "com.squareup.leakcanary:leakcanary-android:2.3"
     }
 }

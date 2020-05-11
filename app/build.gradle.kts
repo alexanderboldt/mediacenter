@@ -68,8 +68,12 @@ android {
 }
 
 repositories {
+    mavenLocal()
     maven { setUrl("https://www.jitpack.io") }
     mavenCentral()
+    google()
+    jcenter()
+    maven("https://plugins.gradle.org/m2/")
 }
 
 dependencies {
@@ -87,7 +91,7 @@ dependencies {
     androidTestImplementation(Deps.Test.activityTestRule)
     androidTestImplementation(Deps.Test.espressoCore)
 
-    // support
+    // androidx
     implementation(Deps.AndroidX.appCompat)
     implementation(Deps.AndroidX.material)
     implementation(Deps.AndroidX.recyclerView)
@@ -98,10 +102,6 @@ dependencies {
     implementation(Deps.AndroidX.lifecycleCommonJava)
     kapt(Deps.AndroidX.lifecycleCompiler)
     implementation(Deps.AndroidX.lifecycleViewModelKtx)
-
-    implementation(Deps.AndroidX.room)
-    kapt(Deps.AndroidX.roomCompiler)
-    implementation(Deps.AndroidX.roomRxJava)
 
     // core-library
     implementation(Deps.Libs.androidCore)
@@ -114,16 +114,6 @@ dependencies {
     // logging
     implementation(Deps.Libs.timber)
 
-    // date-time
-    implementation(Deps.Libs.threetenabp)
-
-    // network
-    implementation(Deps.Libs.retrofit)
-    implementation(Deps.Libs.retrofitMoshiConverter)
-    implementation(Deps.Libs.retrofitRxAdapter)
-    implementation(Deps.Libs.okHttpLogging)
-    implementation(Deps.Libs.moshi)
-
     // image
     implementation(Deps.Libs.glide)
     kapt(Deps.Libs.glideCompiler)
@@ -135,18 +125,12 @@ dependencies {
     implementation(Deps.Libs.conductorSupport)
     implementation(Deps.Libs.conductorViewModel)
 
-    // model-parcel
-    implementation(Deps.Libs.parcel)
-    kapt(Deps.Libs.parcelCompiler)
-
     // reactive
     implementation(Deps.Libs.rxjava)
     implementation(Deps.Libs.rxandroid)
 
     // view-binding
     implementation(Deps.Libs.rxbinding)
-    implementation(Deps.Libs.rxbindingAppcompat)
-    implementation(Deps.Libs.rxbindingSupport)
 
     // leak-detection
     debugImplementation(Deps.Libs.leakCanaryDebug)

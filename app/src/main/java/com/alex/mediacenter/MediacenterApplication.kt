@@ -10,8 +10,6 @@ import com.alex.core.bus.RxBus
 import com.alex.mediacenter.bus.AppEvent
 import com.alex.mediacenter.player.MediaPlayer
 import com.alex.mediacenter.receiver.ConnectivityReceiver
-import leakcanary.LeakCanary
-import leakcanary.LeakSentry
 import timber.log.Timber
 
 class MediacenterApplication : Application(), LifecycleObserver {
@@ -37,19 +35,11 @@ class MediacenterApplication : Application(), LifecycleObserver {
     // ----------------------------------------------------------------------------
 
     private fun setup() {
-        setupLeakCanary()
         setupConnectivityReceiver()
         setupMediaPlayer()
         setupTimber()
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
-    }
-
-    private fun setupLeakCanary() {
-        if (!BuildConfig.DEBUG) return
-
-        LeakSentry.config = LeakSentry.config.copy(watchFragmentViews = false)
-        LeakCanary.config = LeakCanary.config.copy(dumpHeap = true)
     }
 
     private fun setupConnectivityReceiver() {
