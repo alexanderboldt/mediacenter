@@ -4,20 +4,19 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
+import androidx.annotation.CallSuper
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import androidx.viewbinding.ViewBinding
 import io.reactivex.disposables.CompositeDisposable
 import work.beltran.conductorviewmodel.ViewModelController
 
-open class BaseController<T : ViewDataBinding>(@LayoutRes private val layout: Int) : ViewModelController(), LifecycleObserver {
+abstract class BaseController<VB : ViewBinding> : ViewModelController(), LifecycleObserver {
 
-    protected lateinit var binding: T
+    protected lateinit var binding: VB
 
-    protected val disposables = CompositeDisposable()
+    protected val disposables by lazy { CompositeDisposable() }
 
     protected val context: Context
         get() = activity as Context
@@ -25,8 +24,7 @@ open class BaseController<T : ViewDataBinding>(@LayoutRes private val layout: In
     // ----------------------------------------------------------------------------
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        binding = DataBindingUtil.inflate(inflater, layout, container, false)
-        binding.lifecycleOwner = this
+        binding = onCreateBinding(inflater, container)
 
         lifecycle.addObserver(this)
 
@@ -36,29 +34,49 @@ open class BaseController<T : ViewDataBinding>(@LayoutRes private val layout: In
     // ----------------------------------------------------------------------------
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onLifecycleCreate() {
+    @CallSuper
+    open fun onLifecycleCreate() {
         onSetupView()
-        onSetupViewModelBinding()
+        onViewModelBinding()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onLifecycleStart() {
-        onSetupViewBinding()
+    @CallSuper
+    open fun onLifecycleStart() {
+        onViewBinding()
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    @CallSuper
+    open fun onLifecycleResume() {
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    @CallSuper
+    open fun onLifecyclePause() {
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onLifecycleStop() {
+    @CallSuper
+    open fun onLifecycleStop() {
         disposables.clear()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun onLifecycleDestroy() {
+    @CallSuper
+    open fun onLifecycleDestroy() {
         lifecycle.removeObserver(this)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
+    @CallSuper
+    open fun onLifecycleAny() {
     }
 
     // ----------------------------------------------------------------------------
 
+    abstract fun onCreateBinding(inflater: LayoutInflater, container: ViewGroup): VB
     open fun onSetupView() {}
-    open fun onSetupViewBinding() {}
-    open fun onSetupViewModelBinding() {}
+    open fun onViewBinding() {}
+    open fun onViewModelBinding() {}
 }

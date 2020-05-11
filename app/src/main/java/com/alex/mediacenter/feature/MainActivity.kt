@@ -3,9 +3,7 @@ package com.alex.mediacenter.feature
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.databinding.DataBindingUtil
 import com.alex.core.bus.RxBus
-import com.alex.mediacenter.R
 import com.alex.mediacenter.bus.BottomSheetExpandEvent
 import com.alex.mediacenter.bus.BottomSheetOffsetEvent
 import com.alex.mediacenter.databinding.ActivityMainBinding
@@ -18,6 +16,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class MainActivity : AppCompatActivity() {
 
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+
     private lateinit var router: Router
     private lateinit var routerBottomSheet: Router
 
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setContentView(binding.root)
 
         router = Conductor.attachRouter(this, binding.changeHandlerFrameLayout, savedInstanceState)
         routerBottomSheet = Conductor.attachRouter(this, binding.changeHandlerFrameLayoutBottomSheet, savedInstanceState)

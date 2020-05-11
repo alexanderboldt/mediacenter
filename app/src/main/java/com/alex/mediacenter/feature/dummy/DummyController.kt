@@ -1,18 +1,23 @@
 package com.alex.mediacenter.feature.dummy
 
-import com.alex.mediacenter.R
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import com.alex.mediacenter.databinding.ControllerDummyBinding
 import com.alex.mediacenter.feature.base.BaseController
 import com.alex.mediacenter.util.plusAssign
 import com.jakewharton.rxbinding3.view.clicks
 
-class DummyController : BaseController<ControllerDummyBinding>(R.layout.controller_dummy) {
+class DummyController : BaseController<ControllerDummyBinding>() {
 
     private val viewModel by lazy { viewModelProvider().get(DummyViewModel::class.java) }
 
     // ----------------------------------------------------------------------------
 
-    override fun onSetupViewBinding() {
+    override fun onCreateBinding(inflater: LayoutInflater, container: ViewGroup): ControllerDummyBinding {
+        return ControllerDummyBinding.inflate(inflater, container, false)
+    }
+
+    override fun onViewBinding() {
         disposables += binding.button3.clicks().subscribe {
             viewModel.clickOnReleasePlayer()
         }

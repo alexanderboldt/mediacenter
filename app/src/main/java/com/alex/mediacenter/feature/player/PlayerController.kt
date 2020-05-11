@@ -1,8 +1,9 @@
 package com.alex.mediacenter.feature.player
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import com.alex.mediacenter.R
 import com.alex.mediacenter.databinding.ControllerPlayerBinding
 import com.alex.mediacenter.feature.base.BaseController
 import com.alex.mediacenter.util.observe
@@ -14,13 +15,17 @@ import com.jakewharton.rxbinding3.widget.SeekBarStopChangeEvent
 import com.jakewharton.rxbinding3.widget.changeEvents
 import io.reactivex.Observable
 
-class PlayerController : BaseController<ControllerPlayerBinding>(R.layout.controller_player) {
+class PlayerController : BaseController<ControllerPlayerBinding>() {
 
     private val viewModel by lazy { viewModelProvider().get(PlayerViewModel::class.java) }
 
     // ----------------------------------------------------------------------------
 
-    override fun onSetupViewBinding() {
+    override fun onCreateBinding(inflater: LayoutInflater, container: ViewGroup): ControllerPlayerBinding {
+        return ControllerPlayerBinding.inflate(inflater, container, false)
+    }
+
+    override fun onViewBinding() {
         disposables += binding.constraintLayoutPreview.clicks().subscribe {
             viewModel.clickOnPreview()
         }
@@ -46,7 +51,7 @@ class PlayerController : BaseController<ControllerPlayerBinding>(R.layout.contro
         }
     }
 
-    override fun onSetupViewModelBinding() {
+    override fun onViewModelBinding() {
         viewModel.previewAlphaState.observe(this) {
             binding.constraintLayoutPreview.alpha = it
         }
