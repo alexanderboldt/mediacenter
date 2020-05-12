@@ -1,9 +1,9 @@
 package com.alex.mediacenter.feature.dummy
 
-import androidx.lifecycle.ViewModel
+import com.alex.mediacenter.feature.base.BaseViewModel
 import com.alex.mediacenter.player.MediaPlayer
 
-class DummyViewModel : ViewModel() {
+class DummyViewModel : BaseViewModel() {
 
     fun clickOnReleasePlayer() {
         MediaPlayer.release()

@@ -101,7 +101,6 @@ dependencies {
     implementation(Deps.AndroidX.lifecycleExtensions)
     implementation(Deps.AndroidX.lifecycleCommonJava)
     kapt(Deps.AndroidX.lifecycleCompiler)
-    implementation(Deps.AndroidX.lifecycleViewModelKtx)
 
     // core-library
     implementation(Deps.Libs.androidCore)
