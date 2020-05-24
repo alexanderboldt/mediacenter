@@ -93,6 +93,20 @@ abstract class BaseController<VB : ViewBinding> : LifecycleController(), Lifecyc
 
     // ----------------------------------------------------------------------------
 
+    fun getStatusBarHeight(): Int {
+        return context
+            .resources
+            .getIdentifier("status_bar_height", "dimen", "android")
+            .let { resourceId ->
+                when (resourceId > 0) {
+                    true -> context.resources.getDimensionPixelSize(resourceId)
+                    false -> 0
+                }
+            }
+    }
+
+    // ----------------------------------------------------------------------------
+
     private fun viewModelProvider(): ViewModelProvider {
         return viewModelProvider(ViewModelProvider.AndroidViewModelFactory(activity!!.application))
     }

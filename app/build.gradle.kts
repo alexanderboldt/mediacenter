@@ -65,6 +65,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 }
 
 repositories {
@@ -92,9 +96,9 @@ dependencies {
     androidTestImplementation(Deps.Test.espressoCore)
 
     // androidx
+    implementation(Deps.AndroidX.core)
     implementation(Deps.AndroidX.appCompat)
     implementation(Deps.AndroidX.material)
-    implementation(Deps.AndroidX.recyclerView)
     implementation(Deps.AndroidX.constraintLayout)
 
     implementation(Deps.AndroidX.lifecycleRuntime)
@@ -131,5 +135,5 @@ dependencies {
     implementation(Deps.Libs.rxbinding)
 
     // leak-detection
-    debugImplementation(Deps.Libs.leakCanaryDebug)
+    debugImplementation(Deps.Libs.leakCanary)
 }

@@ -2,6 +2,7 @@ package com.alex.mediacenter.feature.dummy
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.updatePadding
 import com.alex.mediacenter.databinding.ControllerDummyBinding
 import com.alex.mediacenter.feature.base.BaseController
 import com.alex.mediacenter.util.plusAssign
@@ -15,6 +16,10 @@ class DummyController : BaseController<ControllerDummyBinding>() {
 
     override fun onCreateBinding(inflater: LayoutInflater, container: ViewGroup): ControllerDummyBinding {
         return ControllerDummyBinding.inflate(inflater, container, false)
+    }
+
+    override fun onSetupView() {
+        binding.root.updatePadding(top = getStatusBarHeight())
     }
 
     override fun onViewBinding() {

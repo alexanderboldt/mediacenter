@@ -8,6 +8,7 @@ object Deps {
     }
 
     object AndroidX {
+        val core = "androidx.core:core-ktx:1.2.0"
         val appCompat = "androidx.appcompat:appcompat:1.0.2"
         val material = "com.google.android.material:material:1.1.0-alpha06"
         val recyclerView = "androidx.recyclerview:recyclerview:1.0.0"
@@ -64,6 +65,6 @@ object Deps {
 
         val rxbinding = "com.jakewharton.rxbinding3:rxbinding:3.1.0"
 
-        val leakCanaryDebug = "com.squareup.leakcanary:leakcanary-android:2.3"
+        val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.3"
     }
 }
