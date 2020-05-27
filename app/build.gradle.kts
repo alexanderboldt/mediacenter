@@ -124,10 +124,6 @@ dependencies {
     implementation(Deps.Libs.conductor)
     implementation(Deps.Libs.conductorLifecycle)
 
-    // reactive
-    implementation(Deps.Libs.rxjava)
-    implementation(Deps.Libs.rxandroid)
-
     // view-binding
     implementation(Deps.Libs.rxbinding)
 

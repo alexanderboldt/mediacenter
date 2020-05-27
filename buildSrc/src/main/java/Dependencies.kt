@@ -40,28 +40,13 @@ object Deps {
 
         val timber = "com.jakewharton.timber:timber:4.7.1"
 
-        val threetenabp = "com.jakewharton.threetenabp:threetenabp:1.2.1"
-
-        val retrofit = "com.squareup.retrofit2:retrofit:2.6.0"
-        val retrofitMoshiConverter = "com.squareup.retrofit2:converter-moshi:2.6.0"
-        val retrofitRxAdapter = "com.squareup.retrofit2:adapter-rxjava2:2.6.0"
-        val okHttpLogging = "com.github.ihsanbal:LoggingInterceptor:3.0.0"
-
-        val moshi = "com.squareup.moshi:moshi-kotlin:1.8.0"
-
-        val glide = "com.github.bumptech.glide:glide:4.9.0"
-        val glideCompiler = "com.github.bumptech.glide:compiler:4.9.0"
-        val glideOkHttpIntegration = "com.github.bumptech.glide:okhttp3-integration:4.9.0"
+        val glide = "com.github.bumptech.glide:glide:4.11.0"
+        val glideCompiler = "com.github.bumptech.glide:compiler:4.11.0"
+        val glideOkHttpIntegration = "com.github.bumptech.glide:okhttp3-integration:4.11.0"
         val glideTransformations = "jp.wasabeef:glide-transformations:4.0.0"
 
         val conductor = "com.bluelinelabs:conductor:2.1.5"
         val conductorLifecycle = "com.bluelinelabs:conductor-archlifecycle:2.1.5"
-
-        val parcel = "org.parceler:parceler-api:1.1.12"
-        val parcelCompiler = "org.parceler:parceler:1.1.12"
-
-        val rxjava = "io.reactivex.rxjava2:rxjava:2.2.10"
-        val rxandroid = "io.reactivex.rxjava2:rxandroid:2.1.1"
 
         val rxbinding = "com.jakewharton.rxbinding3:rxbinding:3.1.0"
 
