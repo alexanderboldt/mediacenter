@@ -72,12 +72,9 @@ android {
 }
 
 repositories {
-    mavenLocal()
-    maven { setUrl("https://www.jitpack.io") }
-    mavenCentral()
     google()
     jcenter()
-    maven("https://plugins.gradle.org/m2/")
+    maven { setUrl("https://www.jitpack.io") }
 }
 
 dependencies {

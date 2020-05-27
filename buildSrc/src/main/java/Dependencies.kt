@@ -34,7 +34,7 @@ object Deps {
     }
 
     object Libs {
-        val androidCore = "com.alex:android-core:1.3.0"
+        val androidCore = "com.github.alexanderboldt:androidcore:1.3.0"
 
         val exoplayer = "com.google.android.exoplayer:exoplayer:2.11.4"
 
