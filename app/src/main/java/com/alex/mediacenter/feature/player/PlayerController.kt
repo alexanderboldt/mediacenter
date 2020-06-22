@@ -8,12 +8,12 @@ import com.alex.mediacenter.databinding.ControllerPlayerBinding
 import com.alex.mediacenter.feature.base.BaseController
 import com.alex.mediacenter.util.observe
 import com.alex.mediacenter.util.plusAssign
-import com.jakewharton.rxbinding3.view.clicks
-import com.jakewharton.rxbinding3.widget.SeekBarProgressChangeEvent
-import com.jakewharton.rxbinding3.widget.SeekBarStartChangeEvent
-import com.jakewharton.rxbinding3.widget.SeekBarStopChangeEvent
-import com.jakewharton.rxbinding3.widget.changeEvents
-import io.reactivex.Observable
+import com.jakewharton.rxbinding4.view.clicks
+import com.jakewharton.rxbinding4.widget.SeekBarProgressChangeEvent
+import com.jakewharton.rxbinding4.widget.SeekBarStartChangeEvent
+import com.jakewharton.rxbinding4.widget.SeekBarStopChangeEvent
+import com.jakewharton.rxbinding4.widget.changeEvents
+import io.reactivex.rxjava3.core.Observable
 
 class PlayerController : BaseController<ControllerPlayerBinding>() {
 

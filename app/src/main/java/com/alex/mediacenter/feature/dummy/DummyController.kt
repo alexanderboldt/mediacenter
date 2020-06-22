@@ -6,7 +6,7 @@ import androidx.core.view.updatePadding
 import com.alex.mediacenter.databinding.ControllerDummyBinding
 import com.alex.mediacenter.feature.base.BaseController
 import com.alex.mediacenter.util.plusAssign
-import com.jakewharton.rxbinding3.view.clicks
+import com.jakewharton.rxbinding4.view.clicks
 
 class DummyController : BaseController<ControllerDummyBinding>() {
 

@@ -9,7 +9,7 @@ import androidx.annotation.NonNull
 import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
 import com.bluelinelabs.conductor.archlifecycle.LifecycleController
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 abstract class BaseController<VB : ViewBinding> : LifecycleController(), LifecycleObserver {
 

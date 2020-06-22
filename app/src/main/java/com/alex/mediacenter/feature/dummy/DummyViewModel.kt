@@ -18,7 +18,7 @@ class DummyViewModel : BaseViewModel() {
 
     fun clickOnButtonTwo() {
         MediaPlayer.play(
-            "https://rbbmediapmdp-a.akamaihd.net/content/fb/88/4003d4ce-3e24-405c-b01f-fcae15996f90/d3330534-55c1-4c6c-b8b2-457faf023c96_a4ad27c5-2f83-4161-8455-b6bff9af72a4.mp3",
+            "https://rbbmediapmdp-a.akamaihd.net/content/ea/f7/eaf72489-96e0-4e92-b230-3d3e31924458/108783cb-172e-4dc2-8ef4-2c44e60e7945_7056089a-d58f-4766-9f31-a05310aed0e5.mp3",
             "Blue Moon",
             "https://www.fritz.de/content/dam/rbb/frz/podcasts/blue_moon.jpg.png/size=470x264.png")
     }
