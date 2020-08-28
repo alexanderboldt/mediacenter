@@ -11,12 +11,14 @@ object Deps {
         val core = "androidx.core:core-ktx:1.3.0"
         val appCompat = "androidx.appcompat:appcompat:1.1.0"
         val material = "com.google.android.material:material:1.1.0"
-        val constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
+        val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0"
 
         val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime:2.2.0"
         val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
         val lifecycleCommonJava = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
         val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:2.2.0"
+
+        val fragmentsExt = "androidx.fragment:fragment-ktx:1.2.5"
     }
 
     object Test {
@@ -42,9 +44,6 @@ object Deps {
         val glideCompiler = "com.github.bumptech.glide:compiler:4.11.0"
         val glideOkHttpIntegration = "com.github.bumptech.glide:okhttp3-integration:4.11.0"
         val glideTransformations = "jp.wasabeef:glide-transformations:4.0.0"
-
-        val conductor = "com.bluelinelabs:conductor:2.1.5"
-        val conductorLifecycle = "com.bluelinelabs:conductor-archlifecycle:2.1.5"
 
         val rxbinding = "com.jakewharton.rxbinding4:rxbinding:4.0.0"
 

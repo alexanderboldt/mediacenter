@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.alex.mediacenter.databinding.ControllerPlayerBinding
-import com.alex.mediacenter.feature.base.BaseController
-import com.alex.mediacenter.util.observe
+import com.alex.mediacenter.feature.base.BaseFragment
 import com.alex.mediacenter.util.plusAssign
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.SeekBarProgressChangeEvent
@@ -15,17 +15,17 @@ import com.jakewharton.rxbinding4.widget.SeekBarStopChangeEvent
 import com.jakewharton.rxbinding4.widget.changeEvents
 import io.reactivex.rxjava3.core.Observable
 
-class PlayerController : BaseController<ControllerPlayerBinding>() {
+class PlayerFragment : BaseFragment<ControllerPlayerBinding>() {
 
-    private val viewModel by lazy { getViewModel(PlayerViewModel::class.java) }
+    private val viewModel: PlayerViewModel by viewModels()
 
     // ----------------------------------------------------------------------------
 
-    override fun onCreateBinding(inflater: LayoutInflater, container: ViewGroup): ControllerPlayerBinding {
+    override fun inflateView(inflater: LayoutInflater, container: ViewGroup?): ControllerPlayerBinding {
         return ControllerPlayerBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewBinding() {
+    override fun bindView() {
         disposables += binding.constraintLayoutPreview.clicks().subscribe {
             viewModel.clickOnPreview()
         }
@@ -51,12 +51,16 @@ class PlayerController : BaseController<ControllerPlayerBinding>() {
         }
     }
 
-    override fun onViewModelBinding() {
-        viewModel.previewAlphaState.observe(this) {
+    override fun bindViewModel() {
+        viewModel.previewAlphaState.observe {
             binding.constraintLayoutPreview.alpha = it
         }
 
-        viewModel.playerState.observe(this) { state ->
+        viewModel.previewAlphaState.observe {
+            binding.constraintLayoutPreview.alpha = it
+        }
+
+        viewModel.playerState.observe { state ->
             binding.imageViewPreviewPlay.visibility = if (state.isPreviewPlayButtonVisible) View.VISIBLE else View.INVISIBLE
             binding.imageViewPreviewPause.visibility = if (state.isPreviewPauseButtonVisible) View.VISIBLE else View.INVISIBLE
             binding.textViewPreviewTitle.text = state.previewTitle
@@ -82,7 +86,7 @@ class PlayerController : BaseController<ControllerPlayerBinding>() {
             }
         }
 
-        viewModel.messageState.observe(this) {
+        viewModel.messageState.observe {
             Toast.makeText(context, it, Toast.LENGTH_LONG).show()
         }
     }

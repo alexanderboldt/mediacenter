@@ -1,41 +1,39 @@
 package com.alex.mediacenter.feature.base
 
-import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
-import androidx.annotation.NonNull
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
-import com.bluelinelabs.conductor.archlifecycle.LifecycleController
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
-abstract class BaseController<VB : ViewBinding> : LifecycleController(), LifecycleObserver {
+abstract class BaseFragment<VB : ViewBinding> : Fragment(), LifecycleObserver {
 
-    protected lateinit var binding: VB
+    private var _binding: VB? = null
+    protected val binding: VB
+        get() = _binding!!
 
     protected val disposables by lazy { CompositeDisposable() }
 
-    protected val context: Context
-        get() = activity as Context
-
-    private val viewModelStore = ViewModelStore()
-
     // ----------------------------------------------------------------------------
 
-    init {
-        retainViewMode = RetainViewMode.RETAIN_DETACH
-    }
-
-    // ----------------------------------------------------------------------------
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        binding = onCreateBinding(inflater, container)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         lifecycle.addObserver(this)
+    }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = inflateView(inflater, container)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupView()
+        bindViewModel()
     }
 
     // ----------------------------------------------------------------------------
@@ -43,14 +41,12 @@ abstract class BaseController<VB : ViewBinding> : LifecycleController(), Lifecyc
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     @CallSuper
     open fun onLifecycleCreate() {
-        onSetupView()
-        onViewModelBinding()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     @CallSuper
     open fun onLifecycleStart() {
-        onViewBinding()
+        bindView()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
@@ -73,6 +69,7 @@ abstract class BaseController<VB : ViewBinding> : LifecycleController(), Lifecyc
     @CallSuper
     open fun onLifecycleDestroy() {
         lifecycle.removeObserver(this)
+        _binding = null
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
@@ -82,36 +79,30 @@ abstract class BaseController<VB : ViewBinding> : LifecycleController(), Lifecyc
 
     // ----------------------------------------------------------------------------
 
-    abstract fun onCreateBinding(inflater: LayoutInflater, container: ViewGroup): VB
-    open fun onSetupView() {}
-    open fun onViewBinding() {}
-    open fun onViewModelBinding() {}
-
-    fun <VM : ViewModel> getViewModel(@NonNull modelClass: Class<VM>): VM {
-        return viewModelProvider().get(modelClass)
-    }
+    abstract fun inflateView(inflater: LayoutInflater, container: ViewGroup?): VB
+    open fun setupView() {}
+    open fun bindView() {}
+    open fun bindViewModel() {}
 
     // ----------------------------------------------------------------------------
 
     fun getStatusBarHeight(): Int {
-        return context
-            .resources
-            .getIdentifier("status_bar_height", "dimen", "android")
+        return resources.getIdentifier("status_bar_height", "dimen", "android")
             .let { resourceId ->
                 when (resourceId > 0) {
-                    true -> context.resources.getDimensionPixelSize(resourceId)
+                    true -> resources.getDimensionPixelSize(resourceId)
                     false -> 0
                 }
             }
     }
 
-    // ----------------------------------------------------------------------------
-
-    private fun viewModelProvider(): ViewModelProvider {
-        return viewModelProvider(ViewModelProvider.AndroidViewModelFactory(activity!!.application))
-    }
-
-    private fun viewModelProvider(factory: ViewModelProvider.NewInstanceFactory): ViewModelProvider {
-        return ViewModelProvider(viewModelStore, factory)
+    /*
+     * This extensions-function has build-in check for nullability.
+     */
+    fun <T> LiveData<T>.observe(observer: (t: T) -> Unit) {
+        this.observe(viewLifecycleOwner, Observer { data ->
+            if (data == null) return@Observer
+            observer(data)
+        })
     }
 }

@@ -103,6 +103,8 @@ dependencies {
     implementation(Deps.AndroidX.lifecycleCommonJava)
     kapt(Deps.AndroidX.lifecycleCompiler)
 
+    implementation(Deps.AndroidX.fragmentsExt)
+
     // core-library
     implementation(Deps.Libs.androidCore)
 
@@ -119,10 +121,6 @@ dependencies {
     kapt(Deps.Libs.glideCompiler)
     implementation(Deps.Libs.glideOkHttpIntegration)
     implementation(Deps.Libs.glideTransformations)
-
-    // fragments-alternative
-    implementation(Deps.Libs.conductor)
-    implementation(Deps.Libs.conductorLifecycle)
 
     // view-binding
     implementation(Deps.Libs.rxbinding)

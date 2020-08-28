@@ -5,17 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.bluelinelabs.conductor.ChangeHandlerFrameLayout
-        android:id="@+id/changeHandlerFrameLayout"
+    <FrameLayout
+        android:id="@+id/frameLayout_fragments"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
-    <com.bluelinelabs.conductor.ChangeHandlerFrameLayout
-        android:id="@+id/changeHandlerFrameLayout_bottom_sheet"
+    <FrameLayout
+        android:id="@+id/frameLayout_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:behavior_hideable="false"
         app:behavior_peekHeight="60dp"
-        app:layout_behavior="@string/bottom_sheet_behavior"/>
+        app:layout_behavior="@string/bottom_sheet_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
