@@ -3,15 +3,15 @@ package com.alex.mediacenter.feature.dummy
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.updatePadding
-import androidx.fragment.app.viewModels
 import com.alex.mediacenter.databinding.ControllerDummyBinding
 import com.alex.mediacenter.feature.base.BaseFragment
 import com.alex.mediacenter.util.plusAssign
 import com.jakewharton.rxbinding4.view.clicks
+import org.koin.android.ext.android.inject
 
 class DummyFragment : BaseFragment<ControllerDummyBinding>() {
 
-    private val viewModel: DummyViewModel by viewModels()
+    private val viewModel: DummyViewModel by inject()
 
     // ----------------------------------------------------------------------------
 

@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import com.alex.mediacenter.databinding.ControllerPlayerBinding
 import com.alex.mediacenter.feature.base.BaseFragment
 import com.alex.mediacenter.util.plusAssign
@@ -14,10 +13,11 @@ import com.jakewharton.rxbinding4.widget.SeekBarStartChangeEvent
 import com.jakewharton.rxbinding4.widget.SeekBarStopChangeEvent
 import com.jakewharton.rxbinding4.widget.changeEvents
 import io.reactivex.rxjava3.core.Observable
+import org.koin.android.ext.android.inject
 
 class PlayerFragment : BaseFragment<ControllerPlayerBinding>() {
 
-    private val viewModel: PlayerViewModel by viewModels()
+    private val viewModel: PlayerViewModel by inject()
 
     // ----------------------------------------------------------------------------
 

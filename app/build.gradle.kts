@@ -57,8 +57,8 @@ android {
         isAbortOnError = false
     }
 
-    viewBinding {
-        isEnabled = true
+    buildFeatures {
+        viewBinding = true
     }
 
     compileOptions {
@@ -127,4 +127,8 @@ dependencies {
 
     // leak-detection
     debugImplementation(Deps.Libs.leakCanary)
+
+    // dependency injection
+    implementation(Deps.Libs.koin)
+    implementation(Deps.Libs.koinViewModel)
 }

@@ -2,7 +2,7 @@ object Deps {
     object Config {
         val applicationId = "com.alex.mediacenter"
         val minSdk = 21
-        val sdk = 29
+        val sdk = 30
         val code = 1
         val name = "1.0"
     }
@@ -48,5 +48,8 @@ object Deps {
         val rxbinding = "com.jakewharton.rxbinding4:rxbinding:4.0.0"
 
         val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.4"
+
+        val koin = "org.koin:koin-android:2.1.6"
+        val koinViewModel = "org.koin:koin-androidx-viewmodel:2.1.6"
     }
 }
