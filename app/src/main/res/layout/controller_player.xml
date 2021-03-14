@@ -8,10 +8,11 @@
 	android:layout_height="match_parent"
 	android:background="#232323">
 
-	<com.alex.mediacenter.ui.GlideImageView
+	<ImageView
 		android:id="@+id/imageView_background"
 		android:layout_width="0dp"
 		android:layout_height="0dp"
+		android:scaleType="centerCrop"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
@@ -89,22 +90,23 @@
 			app:layout_constraintBottom_toBottomOf="parent"
 			tools:text="Band"/>
 
-		<com.alex.mediacenter.ui.GlideImageView
+		<ImageView
 			android:id="@+id/imageView_preview_cover"
 			android:layout_width="50dp"
 			android:layout_height="0dp"
 			android:layout_marginTop="12dp"
 			android:layout_marginEnd="12dp"
 			android:layout_marginBottom="12dp"
-			app:srcCompat="@drawable/ic_pause"
 			app:layout_constraintStart_toEndOf="@+id/textView_preview_title"
 			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
-			app:layout_constraintBottom_toBottomOf="parent"/>
+			app:layout_constraintBottom_toBottomOf="parent"
+			tools:srcCompat="@drawable/ic_launcher_foreground" />
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
 	<androidx.constraintlayout.widget.ConstraintLayout
+		android:id="@+id/constraintLayout_player"
 		android:layout_width="0dp"
 		android:layout_height="0dp"
 		android:padding="24dp"
@@ -113,12 +115,11 @@
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintBottom_toBottomOf="parent">
 
-		<com.alex.mediacenter.ui.GlideImageView
+		<ImageView
 			android:id="@+id/imageView_cover"
 			android:layout_width="0dp"
 			android:layout_height="0dp"
 			android:layout_marginTop="40dp"
-			android:background="#333"
 			app:layout_constraintStart_toStartOf="parent"
 			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
@@ -213,7 +214,6 @@
 			app:layout_constraintTop_toBottomOf="@+id/textView_subtitle"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintBottom_toBottomOf="parent"/>
-
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 

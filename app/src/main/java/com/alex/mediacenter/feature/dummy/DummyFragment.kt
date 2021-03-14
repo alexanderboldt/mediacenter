@@ -5,8 +5,7 @@ import android.view.ViewGroup
 import androidx.core.view.updatePadding
 import com.alex.mediacenter.databinding.ControllerDummyBinding
 import com.alex.mediacenter.feature.base.BaseFragment
-import com.alex.mediacenter.util.plusAssign
-import com.jakewharton.rxbinding4.view.clicks
+import com.alex.mediacenter.util.getStatusBarHeight
 import org.koin.android.ext.android.inject
 
 class DummyFragment : BaseFragment<ControllerDummyBinding>() {
@@ -20,19 +19,19 @@ class DummyFragment : BaseFragment<ControllerDummyBinding>() {
     }
 
     override fun setupView() {
-        binding.root.updatePadding(top = getStatusBarHeight())
+        binding.root.updatePadding(top = resources.getStatusBarHeight())
     }
 
-    override fun bindView() {
-        disposables += binding.button3.clicks().subscribe {
+    override fun setupViewBinding() {
+        binding.button3.setOnClickListener {
             viewModel.clickOnReleasePlayer()
         }
 
-        disposables += binding.button.clicks().subscribe {
+        binding.button.setOnClickListener {
             viewModel.clickOnButtonOne()
         }
 
-        disposables += binding.button2.clicks().subscribe {
+        binding.button2.setOnClickListener {
             viewModel.clickOnButtonTwo()
         }
     }

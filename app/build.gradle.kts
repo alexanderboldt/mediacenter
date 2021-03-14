@@ -9,13 +9,13 @@ apply {
 }
 
 android {
-    compileSdkVersion(Deps.Config.sdk)
+    compileSdkVersion(Config.sdk)
     defaultConfig {
-        applicationId = Deps.Config.applicationId
-        minSdkVersion(Deps.Config.minSdk)
-        targetSdkVersion(Deps.Config.sdk)
-        versionCode = Deps.Config.code
-        versionName = Deps.Config.name
+        applicationId = Config.applicationId
+        minSdkVersion(Config.minSdk)
+        targetSdkVersion(Config.sdk)
+        versionCode = Config.code
+        versionName = Config.name
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -81,16 +81,9 @@ dependencies {
 
     // testing
     testImplementation(Deps.Test.junit)
-    testImplementation(Deps.Test.testRunner)
 
     // android-testing
     androidTestImplementation(Deps.Test.junit)
-    androidTestImplementation(Deps.Test.mockitoCore)
-    androidTestImplementation(Deps.Test.mockitoAndroid)
-    androidTestImplementation(Deps.Test.coreTesting)
-    androidTestImplementation(Deps.Test.testRunner)
-    androidTestImplementation(Deps.Test.activityTestRule)
-    androidTestImplementation(Deps.Test.espressoCore)
 
     // androidx
     implementation(Deps.AndroidX.core)
@@ -103,10 +96,7 @@ dependencies {
     implementation(Deps.AndroidX.lifecycleCommonJava)
     kapt(Deps.AndroidX.lifecycleCompiler)
 
-    implementation(Deps.AndroidX.fragmentsExt)
-
-    // core-library
-    implementation(Deps.Libs.androidCore)
+    implementation(Deps.AndroidX.fragmentsKtx)
 
     // 3rd-party libraries
 
@@ -117,18 +107,17 @@ dependencies {
     implementation(Deps.Libs.timber)
 
     // image
-    implementation(Deps.Libs.glide)
-    kapt(Deps.Libs.glideCompiler)
-    implementation(Deps.Libs.glideOkHttpIntegration)
-    implementation(Deps.Libs.glideTransformations)
-
-    // view-binding
-    implementation(Deps.Libs.rxbinding)
+    implementation(Deps.Libs.coil)
 
     // leak-detection
     debugImplementation(Deps.Libs.leakCanary)
 
     // dependency injection
-    implementation(Deps.Libs.koin)
-    implementation(Deps.Libs.koinViewModel)
+    implementation(Deps.Libs.Koin.koin)
+    implementation(Deps.Libs.Koin.viewModel)
+
+    implementation(Deps.AndroidX.LifeCycle.viewModelKtx)
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1")
+
 }

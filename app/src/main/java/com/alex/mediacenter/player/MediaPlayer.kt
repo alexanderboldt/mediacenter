@@ -2,29 +2,34 @@ package com.alex.mediacenter.player
 
 import android.content.Context
 import android.net.Uri
-import com.alex.core.bus.RxBus
-import com.alex.mediacenter.bus.MediaPlayerEvent
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.*
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.Disposable
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
-object MediaPlayer {
+class MediaPlayer(context: Context) {
 
-    private lateinit var player: SimpleExoPlayer
+    private var player: SimpleExoPlayer = SimpleExoPlayer.Builder(context).build()
 
-    private var positionDisposable: Disposable? = null
+    private var jobPosition: Job? = null
+
+    private val _currentState = MutableStateFlow(State())
+    val currentState = _currentState.asStateFlow()
 
     // ----------------------------------------------------------------------------
 
-    var currentState = MediaPlayerEvent(State.IDLE)
+    data class State(
+            val type: Type = Type.IDLE,
+            val position: Long = 0,
+            val duration: Long = 0,
+            val title: String? = null,
+            val imageUrl: String? = null)
 
-    enum class State {
+    enum class Type {
         IDLE,
         BUFFER,
         PLAY,
@@ -32,36 +37,32 @@ object MediaPlayer {
         END,
         ERROR
     }
-
+    
     // ----------------------------------------------------------------------------
 
-    fun init(context: Context) {
-        player = SimpleExoPlayer.Builder(context).build()
+    init {
         player.addListener(object: Player.EventListener {
             override fun onPlayerError(error: ExoPlaybackException) {
-                currentState = MediaPlayerEvent(State.ERROR)
-                RxBus.publish(currentState)
+                _currentState.value = _currentState.value.copy(type = Type.ERROR)
 
                 disposePosition()
 
-                Timber.d(State.ERROR.name)
+                Timber.d(_currentState.value.toString())
             }
 
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                currentState = when (playbackState) {
-                    Player.STATE_IDLE -> MediaPlayerEvent(State.IDLE)
-                    Player.STATE_BUFFERING -> currentState.copy(position = player.currentPosition, duration = player.duration, state = State.BUFFER)
+                _currentState.value = when (playbackState) {
+                    Player.STATE_IDLE -> _currentState.value.copy(type = Type.IDLE)
+                    Player.STATE_BUFFERING -> _currentState.value.copy(type = Type.BUFFER, position = player.currentPosition, duration = player.duration)
                     Player.STATE_READY -> {
                         when (playWhenReady) {
-                            true -> currentState.copy(state = State.PLAY, duration = player.duration)
-                            false -> currentState.copy(state = State.PAUSE)
+                            true -> _currentState.value.copy(type = Type.PLAY, duration = player.duration)
+                            false -> _currentState.value.copy(type = Type.PAUSE)
                         }
                     }
-                    Player.STATE_ENDED -> currentState.copy(state = State.END)
-                    else -> MediaPlayerEvent(State.ERROR)
+                    Player.STATE_ENDED -> _currentState.value.copy(type = Type.END)
+                    else -> _currentState.value.copy(type = Type.ERROR)
                 }
-
-                RxBus.publish(currentState)
 
                 if (playbackState == Player.STATE_READY && playWhenReady) observePosition() else disposePosition()
 
@@ -70,16 +71,18 @@ object MediaPlayer {
         })
     }
 
-    fun play(streamUrl: String, title: String, imageUrl: String?) {
-        val videoURI = Uri.parse(streamUrl)
-        val dataSourceFactory = DefaultHttpDataSourceFactory("exoplayer")
-        val extractorsFactory = DefaultExtractorsFactory()
-        val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory).createMediaSource(videoURI)
+    // ----------------------------------------------------------------------------
 
-        currentState = MediaPlayerEvent(State.IDLE, 0, 0, title, imageUrl)
+    fun play(streamUrl: String, title: String, imageUrl: String?) {
+        _currentState.value = State(Type.IDLE, 0, 0, title, imageUrl)
 
         player.apply {
-            prepare(mediaSource)
+            val mediaSource = ProgressiveMediaSource
+                    .Factory(DefaultHttpDataSource.Factory(), DefaultExtractorsFactory())
+                    .createMediaSource(MediaItem.fromUri(Uri.parse(streamUrl)))
+
+            setMediaSource(mediaSource)
+            prepare()
             playWhenReady = true
         }
     }
@@ -103,20 +106,19 @@ object MediaPlayer {
     // ----------------------------------------------------------------------------
 
     private fun observePosition() {
-        positionDisposable = Observable
-            .interval(0,1, TimeUnit.SECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .map { player.currentPosition to player.duration }
-            .subscribe {
-                currentState = currentState.copy(state = State.PLAY, position = it.first, duration = it.second)
+        jobPosition = GlobalScope.launch(Dispatchers.Main) {
+            repeat(player.duration.toInt()) {
+                _currentState.value = _currentState.value.copy(position = player.currentPosition)
 
-                RxBus.publish(currentState)
+                delay(1_000)
 
                 Timber.d(currentState.toString())
             }
+        }
     }
 
     private fun disposePosition() {
-        positionDisposable?.dispose()
+        jobPosition?.cancel()
+        jobPosition = null
     }
 }

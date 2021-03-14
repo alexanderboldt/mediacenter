@@ -1,55 +1,100 @@
+object Config {
+    const val applicationId = "com.alex.mediacenter"
+    const val minSdk = 21
+    const val sdk = 30
+    const val code = 1
+    const val name = "1.0"
+}
+
 object Deps {
-    object Config {
-        val applicationId = "com.alex.mediacenter"
-        val minSdk = 21
-        val sdk = 30
-        val code = 1
-        val name = "1.0"
+    object Kotlin {
+        const val version = "1.4.31"
+        const val stdLib = "org.jetbrains.kotlin:kotlin-stdlib:$version"
     }
 
     object AndroidX {
-        val core = "androidx.core:core-ktx:1.3.0"
-        val appCompat = "androidx.appcompat:appcompat:1.1.0"
-        val material = "com.google.android.material:material:1.1.0"
-        val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.0"
+        const val core = "androidx.core:core-ktx:1.3.1"
+        const val appCompat = "androidx.appcompat:appcompat:1.2.0"
+        const val material = "com.google.android.material:material:1.2.1"
+        const val recyclerView = "androidx.recyclerview:recyclerview:1.1.0"
+        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.1"
+        const val fragmentsKtx = "androidx.fragment:fragment-ktx:1.2.5"
 
-        val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime:2.2.0"
-        val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
-        val lifecycleCommonJava = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
-        val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:2.2.0"
+        const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime:2.2.0"
+        const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
+        const val lifecycleCommonJava = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
+        const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:2.2.0"
 
-        val fragmentsExt = "androidx.fragment:fragment-ktx:1.2.5"
+        object LifeCycle {
+            private const val version = "2.3.0"
+
+            // coroutineScope() on Lifecycle, lifecycleScope on LifecycleOwner
+            const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
+
+            // Annotation processor
+            const val compiler = "androidx.lifecycle:lifecycle-compiler:$version"
+
+            // viewModelScope for coroutines
+            const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
+        }
+
+        object Navigation {
+            private const val version = "2.3.0"
+            const val fragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
+            const val uiKtx = "androidx.navigation:navigation-ui-ktx:$version"
+            const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:$version"
+        }
+
+        object Room {
+            private const val version = "2.2.5"
+            const val room = "androidx.room:room-runtime:$version"
+            const val ktx = "androidx.room:room-ktx:$version"
+            const val compiler = "androidx.room:room-compiler:$version"
+        }
+
+        object DataStore {
+            private const val version = "1.0.0-alpha02"
+            const val preferences = "androidx.datastore:datastore-preferences:$version"
+        }
     }
 
     object Test {
-        val junit = "androidx.test.ext:junit:1.0.0"
-        val testRunner = "androidx.test:runner:1.1.0"
-        val mockitoCore = "org.mockito:mockito-core:2.6.3"
-        val mockitoAndroid = "org.mockito:mockito-android:2.6.3"
-
-        val coreTesting = "androidx.arch.core:core-testing:2.0.0-rc01"
-
-        val activityTestRule = "androidx.test:rules:1.1.0"
-        val espressoCore = "androidx.test.espresso:espresso-core:3.1.0"
+        const val junit = "androidx.test.ext:junit:1.1.2"
     }
 
     object Libs {
-        val androidCore = "com.github.alexanderboldt:androidcore:2.0.0"
+        const val exoplayer = "com.google.android.exoplayer:exoplayer:2.13.2"
 
-        val exoplayer = "com.google.android.exoplayer:exoplayer:2.11.5"
+        object Coroutines {
+            private const val version = "1.3.9"
+            const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
+            const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+        }
 
-        val timber = "com.jakewharton.timber:timber:4.7.1"
+        const val timber = "com.jakewharton.timber:timber:4.7.1"
 
-        val glide = "com.github.bumptech.glide:glide:4.11.0"
-        val glideCompiler = "com.github.bumptech.glide:compiler:4.11.0"
-        val glideOkHttpIntegration = "com.github.bumptech.glide:okhttp3-integration:4.11.0"
-        val glideTransformations = "jp.wasabeef:glide-transformations:4.0.0"
+        object Moshi {
+            private const val version = "1.10.0"
+            const val moshi = "com.squareup.moshi:moshi:$version"
+            const val codeGen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
+        }
 
-        val rxbinding = "com.jakewharton.rxbinding4:rxbinding:4.0.0"
+        const val coil = "io.coil-kt:coil:1.0.0"
 
-        val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.4"
+        const val liveEvent = "com.github.hadilq.liveevent:liveevent:1.2.0"
 
-        val koin = "org.koin:koin-android:2.1.6"
-        val koinViewModel = "org.koin:koin-androidx-viewmodel:2.1.6"
+        const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.3"
+
+        object Koin {
+            private const val version = "2.1.6"
+            const val koin = "org.koin:koin-android:$version"
+            const val viewModel = "org.koin:koin-androidx-viewmodel:$version"
+        }
+
+        object Corbind {
+            private const val version = "1.4.0"
+            const val corbind = "ru.ldralighieri.corbind:corbind-core:$version"
+            const val appCompat = "ru.ldralighieri.corbind:corbind-appcompat:$version"
+        }
     }
 }

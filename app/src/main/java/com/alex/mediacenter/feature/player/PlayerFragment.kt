@@ -3,21 +3,36 @@ package com.alex.mediacenter.feature.player
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.updateLayoutParams
+import coil.load
+import coil.transform.BlurTransformation
 import com.alex.mediacenter.databinding.ControllerPlayerBinding
 import com.alex.mediacenter.feature.base.BaseFragment
-import com.alex.mediacenter.util.plusAssign
-import com.jakewharton.rxbinding4.view.clicks
-import com.jakewharton.rxbinding4.widget.SeekBarProgressChangeEvent
-import com.jakewharton.rxbinding4.widget.SeekBarStartChangeEvent
-import com.jakewharton.rxbinding4.widget.SeekBarStopChangeEvent
-import com.jakewharton.rxbinding4.widget.changeEvents
-import io.reactivex.rxjava3.core.Observable
+import com.alex.mediacenter.util.getBottomBarHeight
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.android.ext.android.inject
 
 class PlayerFragment : BaseFragment<ControllerPlayerBinding>() {
 
     private val viewModel: PlayerViewModel by inject()
+
+    private val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            viewModel.onBottomSheetOffset(slideOffset)
+        }
+
+        override fun onStateChanged(bottomSheet: View, newState: Int) {}
+    }
+
+    // ----------------------------------------------------------------------------
+
+    override fun onDestroyView() {
+        removeBottomSheetCallback(bottomSheetCallback)
+        super.onDestroyView()
+    }
 
     // ----------------------------------------------------------------------------
 
@@ -25,35 +40,48 @@ class PlayerFragment : BaseFragment<ControllerPlayerBinding>() {
         return ControllerPlayerBinding.inflate(inflater, container, false)
     }
 
-    override fun bindView() {
-        disposables += binding.constraintLayoutPreview.clicks().subscribe {
-            viewModel.clickOnPreview()
-        }
+    override fun setupView() {
+        addBottomSheetCallback(bottomSheetCallback)
 
-        disposables += Observable
-            .merge(binding.imageViewPreviewPlay.clicks(), binding.imageViewPlay.clicks())
-            .subscribe {
-                viewModel.clickOnPlay()
-            }
-
-        disposables += Observable
-            .merge(binding.imageViewPreviewPause.clicks(), binding.imageViewPause.clicks())
-            .subscribe {
-                viewModel.clickOnPause()
-            }
-
-        disposables += binding.seekBar.changeEvents().subscribe { event ->
-            when (event) {
-                is SeekBarStartChangeEvent -> viewModel.seekStart()
-                is SeekBarStopChangeEvent -> viewModel.seekStop(event.view.progress.toLong())
-                is SeekBarProgressChangeEvent -> if (event.fromUser) viewModel.seek(event.progress.toLong())
-            }
+        binding.constraintLayoutPlayer.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            bottomMargin = resources.getBottomBarHeight()
         }
     }
 
-    override fun bindViewModel() {
-        viewModel.previewAlphaState.observe {
-            binding.constraintLayoutPreview.alpha = it
+    override fun setupViewBinding() {
+        binding.constraintLayoutPreview.setOnClickListener {
+            viewModel.onClickPreview()
+        }
+
+        binding.imageViewPreviewPlay.setOnClickListener {
+            viewModel.onClickPlay()
+        }
+
+        binding.imageViewPlay.setOnClickListener {
+            viewModel.onClickPlay()
+        }
+
+        binding.imageViewPreviewPause.setOnClickListener {
+            viewModel.clickOnPause()
+        }
+
+        binding.imageViewPause.setOnClickListener {
+            viewModel.clickOnPause()
+        }
+
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {}
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                viewModel.seekStop(seekBar!!.progress.toLong())
+            }
+        })
+    }
+
+    override fun setupViewModel() {
+        viewModel.bottomSheetState.observe { state ->
+            setBottomSheetState(state)
         }
 
         viewModel.previewAlphaState.observe {
@@ -80,9 +108,11 @@ class PlayerFragment : BaseFragment<ControllerPlayerBinding>() {
                 binding.imageViewBackground.setImageDrawable(null)
                 binding.imageViewCover.setImageDrawable(null)
             } else {
-                binding.imageViewPreviewCover.setImage(state.coverUrl)
-                binding.imageViewBackground.setImage(state.coverUrl, true)
-                binding.imageViewCover.setImage(state.coverUrl)
+                binding.imageViewPreviewCover.load(state.coverUrl)
+                binding.imageViewBackground.load(state.coverUrl) {
+                    this.transformations(BlurTransformation(requireContext(), 10f, 10f))
+                }
+                binding.imageViewCover.load(state.coverUrl)
             }
         }
 

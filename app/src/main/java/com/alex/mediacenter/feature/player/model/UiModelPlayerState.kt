@@ -1,6 +1,6 @@
-package com.alex.mediacenter.feature.player
+package com.alex.mediacenter.feature.player.model
 
-data class PlayerState(
+data class UiModelPlayerState(
     val isPreviewPlayButtonVisible: Boolean,
     val isPreviewPauseButtonVisible: Boolean,
     val previewTitle: String?,

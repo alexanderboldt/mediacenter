@@ -1,21 +1,20 @@
-package com.alex.mediacenter.feature
+package com.alex.mediacenter.feature.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
-import com.alex.core.bus.RxBus
 import com.alex.mediacenter.R
-import com.alex.mediacenter.bus.BottomSheetExpandEvent
-import com.alex.mediacenter.bus.BottomSheetOffsetEvent
 import com.alex.mediacenter.databinding.ActivityMainBinding
 import com.alex.mediacenter.feature.dummy.DummyFragment
 import com.alex.mediacenter.feature.player.PlayerFragment
+import com.alex.mediacenter.util.getBottomBarHeight
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+
+    private val behavior by lazy { BottomSheetBehavior.from(binding.frameLayoutBottomSheet) }
 
     // ----------------------------------------------------------------------------
 
@@ -29,6 +28,20 @@ class MainActivity : AppCompatActivity() {
 
     // ----------------------------------------------------------------------------
 
+    fun addBottomSheetCallback(callback: BottomSheetBehavior.BottomSheetCallback) {
+        behavior.addBottomSheetCallback(callback)
+    }
+
+    fun removeBottomSheetCallback(callback: BottomSheetBehavior.BottomSheetCallback) {
+        behavior.removeBottomSheetCallback(callback)
+    }
+
+    fun setBottomSheetState(state: Int) {
+        behavior.state = state
+    }
+
+    // ----------------------------------------------------------------------------
+
     private fun setupView() {
         supportFragmentManager.commit {
             add(R.id.frameLayout_fragments, DummyFragment())
@@ -38,17 +51,7 @@ class MainActivity : AppCompatActivity() {
             add(R.id.frameLayout_bottom_sheet, PlayerFragment())
         }
 
-        val behavior = BottomSheetBehavior.from(binding.frameLayoutBottomSheet)
-        behavior.setBottomSheetCallback(object:BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                RxBus.publish(BottomSheetOffsetEvent(slideOffset))
-            }
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {}
-        })
-
-        val disposable = RxBus.listen(BottomSheetExpandEvent::class.java).subscribe { event ->
-            behavior.state = if (event.isExpanded) BottomSheetBehavior.STATE_EXPANDED else BottomSheetBehavior.STATE_COLLAPSED
-        }
+        // todo: check if the device has software or device buttons
+        behavior.peekHeight += resources.getBottomBarHeight()
     }
 }
