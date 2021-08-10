@@ -19,19 +19,8 @@ object Deps {
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.0.1"
         const val fragmentsKtx = "androidx.fragment:fragment-ktx:1.2.5"
 
-        const val lifecycleRuntime = "androidx.lifecycle:lifecycle-runtime:2.2.0"
-        const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.2.0"
-        const val lifecycleCommonJava = "androidx.lifecycle:lifecycle-common-java8:2.2.0"
-        const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:2.2.0"
-
         object LifeCycle {
             private const val version = "2.3.0"
-
-            // coroutineScope() on Lifecycle, lifecycleScope on LifecycleOwner
-            const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
-
-            // Annotation processor
-            const val compiler = "androidx.lifecycle:lifecycle-compiler:$version"
 
             // viewModelScope for coroutines
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
@@ -44,12 +33,6 @@ object Deps {
 
     object Libs {
         const val exoplayer = "com.google.android.exoplayer:exoplayer:2.14.2"
-
-        object Coroutines {
-            private const val version = "1.3.9"
-            const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
-            const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
-        }
 
         const val timber = "com.jakewharton.timber:timber:4.7.1"
 

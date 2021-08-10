@@ -1,4 +1,3 @@
-val kotlin_version: String by extra
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -93,12 +92,9 @@ dependencies {
     implementation(Deps.AndroidX.material)
     implementation(Deps.AndroidX.constraintLayout)
 
-    implementation(Deps.AndroidX.lifecycleRuntime)
-    implementation(Deps.AndroidX.lifecycleExtensions)
-    implementation(Deps.AndroidX.lifecycleCommonJava)
-    kapt(Deps.AndroidX.lifecycleCompiler)
-
     implementation(Deps.AndroidX.fragmentsKtx)
+
+    implementation(Deps.AndroidX.LifeCycle.viewModelKtx)
 
     // 3rd-party libraries
 
@@ -116,9 +112,4 @@ dependencies {
 
     // dependency injection
     implementation(Deps.Libs.Koin.koin)
-
-    implementation(Deps.AndroidX.LifeCycle.viewModelKtx)
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1")
-
 }
