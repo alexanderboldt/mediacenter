@@ -1,11 +1,7 @@
 package com.alex.mediacenter.player
 
 import android.content.Context
-import android.net.Uri
 import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,7 +37,7 @@ class MediaPlayer(context: Context) {
     // ----------------------------------------------------------------------------
 
     init {
-        player.addListener(object: Player.EventListener {
+        player.addListener(object: Player.Listener {
             override fun onPlayerError(error: ExoPlaybackException) {
                 _currentState.value = _currentState.value.copy(type = Type.ERROR)
 
@@ -77,13 +73,9 @@ class MediaPlayer(context: Context) {
         _currentState.value = State(Type.IDLE, 0, 0, title, imageUrl)
 
         player.apply {
-            val mediaSource = ProgressiveMediaSource
-                    .Factory(DefaultHttpDataSource.Factory(), DefaultExtractorsFactory())
-                    .createMediaSource(MediaItem.fromUri(Uri.parse(streamUrl)))
-
-            setMediaSource(mediaSource)
-            prepare()
+            setMediaItem(MediaItem.fromUri(streamUrl))
             playWhenReady = true
+            prepare()
         }
     }
 
