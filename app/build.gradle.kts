@@ -1,3 +1,4 @@
+val kotlin_version: String by extra
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -9,11 +10,12 @@ apply {
 }
 
 android {
-    compileSdkVersion(Config.sdk)
+    compileSdk = Config.sdk
+
     defaultConfig {
         applicationId = Config.applicationId
-        minSdkVersion(Config.minSdk)
-        targetSdkVersion(Config.sdk)
+        minSdk = Config.minSdk
+        targetSdk = Config.sdk
         versionCode = Config.code
         versionName = Config.name
 
@@ -21,7 +23,7 @@ android {
 
         vectorDrawables.useSupportLibrary = true
 
-        ndk?.abiFilters("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        ndk.abiFilters.addAll(mutableSetOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
     }
     buildTypes {
         getByName("debug") {
@@ -53,7 +55,7 @@ android {
         }
     }
 
-    lintOptions {
+    lint {
         isAbortOnError = false
     }
 
@@ -73,8 +75,8 @@ android {
 
 repositories {
     google()
-    jcenter()
     maven { setUrl("https://www.jitpack.io") }
+    mavenCentral()
 }
 
 dependencies {
@@ -114,7 +116,6 @@ dependencies {
 
     // dependency injection
     implementation(Deps.Libs.Koin.koin)
-    implementation(Deps.Libs.Koin.viewModel)
 
     implementation(Deps.AndroidX.LifeCycle.viewModelKtx)
 
