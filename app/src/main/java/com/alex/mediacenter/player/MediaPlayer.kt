@@ -38,7 +38,7 @@ class MediaPlayer(context: Context) {
 
     init {
         player.addListener(object: Player.Listener {
-            override fun onPlayerError(error: ExoPlaybackException) {
+            override fun onPlayerError(error: PlaybackException) {
                 _currentState.value = _currentState.value.copy(type = Type.ERROR)
 
                 disposePosition()

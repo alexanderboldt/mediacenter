@@ -88,12 +88,9 @@ dependencies {
 
     // androidx
     implementation(Deps.AndroidX.core)
-    implementation(Deps.AndroidX.appCompat)
     implementation(Deps.AndroidX.material)
     implementation(Deps.AndroidX.constraintLayout)
-
     implementation(Deps.AndroidX.fragmentsKtx)
-
     implementation(Deps.AndroidX.LifeCycle.viewModelKtx)
 
     // 3rd-party libraries

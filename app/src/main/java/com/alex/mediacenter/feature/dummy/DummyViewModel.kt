@@ -1,11 +1,16 @@
 package com.alex.mediacenter.feature.dummy
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.alex.mediacenter.player.MediaPlayer
+import kotlinx.coroutines.launch
 
 class DummyViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
 
     fun clickOnReleasePlayer() {
+        viewModelScope.launch {
+
+        }
         mediaPlayer.release()
     }
 
