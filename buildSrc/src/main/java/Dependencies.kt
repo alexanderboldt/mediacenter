@@ -1,7 +1,7 @@
 object Config {
     const val applicationId = "com.alex.mediacenter"
     const val minSdk = 23
-    const val sdk = 30
+    const val sdk = 31
     const val code = 1
     const val name = "1.0"
 }
@@ -17,6 +17,7 @@ object Deps {
         const val material = "com.google.android.material:material:1.4.0"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.0"
         const val fragmentsKtx = "androidx.fragment:fragment-ktx:1.3.6"
+        const val splashScreen = "androidx.core:core-splashscreen:1.0.0-alpha01"
 
         object LifeCycle {
             private const val version = "2.3.1"

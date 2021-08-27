@@ -109,4 +109,6 @@ dependencies {
 
     // dependency injection
     implementation(Deps.Libs.Koin.koin)
+
+    implementation(Deps.AndroidX.splashScreen)
 }
