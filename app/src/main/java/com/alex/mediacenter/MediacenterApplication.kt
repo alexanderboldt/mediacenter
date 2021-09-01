@@ -8,7 +8,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
 
-class MediacenterApplication : Application() {
+class MediaCenterApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -31,11 +31,14 @@ class MediacenterApplication : Application() {
 
     private fun setupKoin() {
         startKoin {
-            androidContext(this@MediacenterApplication)
-            modules(listOf(
+            androidContext(this@MediaCenterApplication)
+            modules(
+                listOf(
                     dummyModule,
                     playerModule,
-                    mediaPlayerModule))
+                    mediaPlayerModule
+                )
+            )
         }
     }
 }

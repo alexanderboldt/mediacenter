@@ -8,22 +8,32 @@ object Config {
 
 object Deps {
     object Kotlin {
-        const val version = "1.5.30"
+        const val version = "1.5.10"
         const val stdLib = "org.jetbrains.kotlin:kotlin-stdlib:$version"
     }
 
     object AndroidX {
         const val core = "androidx.core:core-ktx:1.6.0"
         const val material = "com.google.android.material:material:1.4.0"
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.0"
-        const val fragmentsKtx = "androidx.fragment:fragment-ktx:1.3.6"
         const val splashScreen = "androidx.core:core-splashscreen:1.0.0-alpha01"
+
+        object Compose {
+            const val version = "1.0.0"
+            const val ui = "androidx.compose.ui:ui:$version"
+            const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
+            const val foundation = "androidx.compose.foundation:foundation:$version"
+            const val material = "androidx.compose.material:material:$version"
+        }
 
         object LifeCycle {
             private const val version = "2.3.1"
 
             // viewModelScope for coroutines
             const val viewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$version"
+        }
+
+        object Navigation {
+            const val compose = "androidx.navigation:navigation-compose:2.4.0-alpha04"
         }
     }
 
@@ -36,13 +46,17 @@ object Deps {
 
         const val timber = "com.jakewharton.timber:timber:5.0.1"
 
-        const val coil = "io.coil-kt:coil:1.3.2"
+        object Coil {
+            private const val version = "1.3.2"
+            const val compose = "io.coil-kt:coil-compose:$version"
+        }
 
         const val leakCanary = "com.squareup.leakcanary:leakcanary-android:2.7"
 
         object Koin {
             private const val version = "3.1.2"
             const val koin = "io.insert-koin:koin-android:$version"
+            const val compose = "io.insert-koin:koin-androidx-compose:$version"
         }
     }
 }

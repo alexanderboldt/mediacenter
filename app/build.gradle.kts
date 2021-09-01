@@ -1,9 +1,9 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
     id("kotlin-kapt")
 }
+
 apply {
     plugin("kotlin-android")
 }
@@ -32,7 +32,7 @@ android {
 
             applicationIdSuffix = ".development"
 
-            resValue("string", "app_name", "mediacenter (debug)")
+            resValue("string", "app_name", "MediaCenter (debug)")
         }
 
         getByName("release") {
@@ -50,7 +50,7 @@ android {
             // use the debug-signing-configuration as long there is no keystore
             signingConfig = signingConfigs.getByName("debug")
 
-            resValue("string", "app_name", "newstime")
+            resValue("string", "app_name", "MediaCenter")
         }
     }
 
@@ -59,7 +59,11 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = Deps.AndroidX.Compose.version
     }
 
     compileOptions {
@@ -89,9 +93,14 @@ dependencies {
     // androidx
     implementation(Deps.AndroidX.core)
     implementation(Deps.AndroidX.material)
-    implementation(Deps.AndroidX.constraintLayout)
-    implementation(Deps.AndroidX.fragmentsKtx)
     implementation(Deps.AndroidX.LifeCycle.viewModelKtx)
+
+    implementation(Deps.AndroidX.Compose.ui)
+    implementation(Deps.AndroidX.Compose.uiTooling)
+    implementation(Deps.AndroidX.Compose.foundation)
+    implementation(Deps.AndroidX.Compose.material)
+
+    implementation(Deps.AndroidX.Navigation.compose)
 
     // 3rd-party libraries
 
@@ -102,13 +111,14 @@ dependencies {
     implementation(Deps.Libs.timber)
 
     // image
-    implementation(Deps.Libs.coil)
+    implementation(Deps.Libs.Coil.compose)
 
     // leak-detection
     debugImplementation(Deps.Libs.leakCanary)
 
     // dependency injection
     implementation(Deps.Libs.Koin.koin)
+    implementation(Deps.Libs.Koin.compose)
 
     implementation(Deps.AndroidX.splashScreen)
 }

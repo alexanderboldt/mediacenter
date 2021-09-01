@@ -1,28 +1,27 @@
 package com.alex.mediacenter.feature.player
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alex.mediacenter.feature.player.model.UiModelPlayerState
+import com.alex.mediacenter.feature.player.model.UiModelPlayerPreview
 import com.alex.mediacenter.player.MediaPlayer
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
 
-    private val _bottomSheetState = MutableLiveData<Int>()
-    val bottomSheetState: LiveData<Int> = _bottomSheetState
-
-    private val _previewAlphaState = MutableLiveData<Float>()
-    val previewAlphaState: LiveData<Float> = _previewAlphaState
-
-    private val _playerState = MutableLiveData<UiModelPlayerState>()
-    val playerState: LiveData<UiModelPlayerState> = _playerState
-
-    private val _messageState = MutableLiveData<String>()
-    val messageState: LiveData<String> = _messageState
+    var playerPreviewState: UiModelPlayerPreview by mutableStateOf(
+        UiModelPlayerPreview(
+            true,
+            "",
+            0f,
+            null,
+            "00:00:00",
+            "00:00:00"
+        ))
+        private set
 
     // ----------------------------------------------------------------------------
 
@@ -31,97 +30,57 @@ class PlayerViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
             mediaPlayer.currentState.collect { state ->
                 when (state.type) {
                     MediaPlayer.Type.IDLE -> {
-                        UiModelPlayerState(
+                        playerPreviewState = UiModelPlayerPreview(
                             true,
-                            false,
-                            null,
-                            0,
-                            0,
-                            true,
-                            false,
+                            "",
+                            0f,
                             null,
                             "00:00:00",
-                            0,
-                            0,
-                            "00:00:00",
-                            null
+                            "00:00:00"
                         )
                     }
                     MediaPlayer.Type.BUFFER -> {
-                        playerState.value?.copy(
-                            previewProgressBarProgress = state.position.toInt(),
-                            progressBarProgress = state.position.toInt(),
-                            positionText = convertTimestampToString(
+                        playerPreviewState = playerPreviewState.copy(
+                            showPlayButton = false,
+                            progress = calculateProgress(state.position, state.duration),
+                            position = convertTimestampToString(
                                 state.position / 1000,
-                                state.duration / 100 >= 3600
-                            )
-                        )
+                                state.duration / 1000 >= 3600
+                            ))
                     }
                     MediaPlayer.Type.PLAY -> {
-                        UiModelPlayerState(
+                        playerPreviewState = UiModelPlayerPreview(
                             false,
-                            true,
-                            state.title,
-                            state.position.toInt(),
-                            state.duration.toInt(),
-                            false,
-                            true,
-                            state.title,
+                            state.title ?: "",
+                            calculateProgress(state.position, state.duration),
+                            state.imageUrl,
                             convertTimestampToString(
                                 state.position / 1000,
                                 state.duration / 1000 >= 3600
                             ),
-                            state.position.toInt(),
-                            state.duration.toInt(),
                             convertTimestampToString(
                                 state.duration / 1000,
                                 state.duration / 1000 >= 3600
-                            ),
-                            state.imageUrl
-                        )
+                            ))
                     }
                     MediaPlayer.Type.PAUSE, MediaPlayer.Type.END -> {
-                        playerState.value?.copy(
-                            isPreviewPlayButtonVisible = true,
-                            isPreviewPauseButtonVisible = false,
-                            isPlayButtonVisible = true,
-                            isPauseButtonVisible = false
-                        )
+                        playerPreviewState = playerPreviewState.copy(showPlayButton = true)
                     }
                     MediaPlayer.Type.ERROR -> {
-                        _messageState.postValue("Could not load media")
-
-                        UiModelPlayerState(
+                        playerPreviewState = UiModelPlayerPreview(
                             true,
-                            false,
-                            null,
-                            0,
-                            0,
-                            true,
-                            false,
+                            "",
+                            0f,
                             null,
                             "00:00:00",
-                            0,
-                            0,
-                            "00:00:00",
-                            null
-                        )
+                            "00:00:00")
                     }
-                }.also {
-                    _playerState.postValue(it) }
+                }
             }
         }
     }
 
     // ----------------------------------------------------------------------------
-
-    fun onBottomSheetOffset(offset: Float) {
-        _previewAlphaState.postValue(1 - offset)
-    }
-
-    fun onClickPreview() {
-        _bottomSheetState.postValue(BottomSheetBehavior.STATE_EXPANDED)
-    }
 
     fun onClickPlay() {
         if (mediaPlayer.currentState.value.type == MediaPlayer.Type.END) {
@@ -130,7 +89,7 @@ class PlayerViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
         mediaPlayer.resume()
     }
 
-    fun clickOnPause() {
+    fun onClickPause() {
         mediaPlayer.pause()
     }
 
@@ -144,6 +103,13 @@ class PlayerViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
         return when (greaterThanOneHour) {
             true -> String.format("%02d:%02d:%02d", timestamp / 3600, (timestamp % 3600) / 60, (timestamp % 60))
             false -> String.format("%02d:%02d", (timestamp % 3600) / 60, (timestamp % 60))
+        }
+    }
+
+    private fun calculateProgress(position: Long, duration: Long): Float {
+        return when (position > 0 && duration > 0) {
+            true -> position.toFloat() / duration.toFloat()
+            false -> 0.0f
         }
     }
 }
