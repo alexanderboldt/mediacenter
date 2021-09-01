@@ -5,12 +5,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alex.mediacenter.R
+import com.alex.mediacenter.feature.base.ResourceProvider
 import com.alex.mediacenter.feature.player.model.UiModelPlayerPreview
 import com.alex.mediacenter.player.MediaPlayer
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class PlayerViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
+class PlayerViewModel(
+    private val mediaPlayer: MediaPlayer,
+    private val resourceProvider: ResourceProvider) : ViewModel() {
+
+    private val durationEmpty by lazy { resourceProvider.getString(R.string.player_duration_empty) }
+    private val durationFormat by lazy { resourceProvider.getString(R.string.player_duration_format) }
 
     var playerPreviewState: UiModelPlayerPreview by mutableStateOf(
         UiModelPlayerPreview(
@@ -18,8 +25,8 @@ class PlayerViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
             "",
             0f,
             null,
-            "00:00:00",
-            "00:00:00"
+            durationEmpty,
+            durationEmpty
         ))
         private set
 
@@ -35,18 +42,16 @@ class PlayerViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
                             "",
                             0f,
                             null,
-                            "00:00:00",
-                            "00:00:00"
+                            durationEmpty,
+                            durationEmpty
                         )
                     }
                     MediaPlayer.Type.BUFFER -> {
                         playerPreviewState = playerPreviewState.copy(
                             showPlayButton = false,
                             progress = calculateProgress(state.position, state.duration),
-                            position = convertTimestampToString(
-                                state.position / 1000,
-                                state.duration / 1000 >= 3600
-                            ))
+                            position = convertTimestampToString(state.position)
+                        )
                     }
                     MediaPlayer.Type.PLAY -> {
                         playerPreviewState = UiModelPlayerPreview(
@@ -54,14 +59,9 @@ class PlayerViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
                             state.title ?: "",
                             calculateProgress(state.position, state.duration),
                             state.imageUrl,
-                            convertTimestampToString(
-                                state.position / 1000,
-                                state.duration / 1000 >= 3600
-                            ),
-                            convertTimestampToString(
-                                state.duration / 1000,
-                                state.duration / 1000 >= 3600
-                            ))
+                            convertTimestampToString(state.position),
+                            convertTimestampToString(state.duration)
+                        )
                     }
                     MediaPlayer.Type.PAUSE, MediaPlayer.Type.END -> {
                         playerPreviewState = playerPreviewState.copy(showPlayButton = true)
@@ -72,8 +72,8 @@ class PlayerViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
                             "",
                             0f,
                             null,
-                            "00:00:00",
-                            "00:00:00")
+                            durationEmpty,
+                            durationEmpty)
                     }
                 }
             }
@@ -99,10 +99,9 @@ class PlayerViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
 
     // ----------------------------------------------------------------------------
 
-    private fun convertTimestampToString(timestamp: Long, greaterThanOneHour: Boolean): String {
-        return when (greaterThanOneHour) {
-            true -> String.format("%02d:%02d:%02d", timestamp / 3600, (timestamp % 3600) / 60, (timestamp % 60))
-            false -> String.format("%02d:%02d", (timestamp % 3600) / 60, (timestamp % 60))
+    private fun convertTimestampToString(timestamp: Long): String {
+        return with(timestamp / 1000) {
+            String.format(durationFormat, this / 3600, (this % 3600) / 60, (this % 60))
         }
     }
 

@@ -1,6 +1,7 @@
 package com.alex.mediacenter
 
 import android.app.Application
+import com.alex.mediacenter.feature.base.di.resourceProviderModule
 import com.alex.mediacenter.feature.dummy.di.dummyModule
 import com.alex.mediacenter.feature.player.di.playerModule
 import com.alex.mediacenter.player.di.mediaPlayerModule
@@ -36,7 +37,8 @@ class MediaCenterApplication : Application() {
                 listOf(
                     dummyModule,
                     playerModule,
-                    mediaPlayerModule
+                    mediaPlayerModule,
+                    resourceProviderModule
                 )
             )
         }
