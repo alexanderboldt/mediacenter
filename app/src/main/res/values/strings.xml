@@ -1,4 +1,10 @@
 <resources>
+    <!-- dummy screen -->
+    <string name="dummy_release_player">Release Player</string>
+    <string name="dummy_lateline">Lateline</string>
+    <string name="dummy_blue_moon">Blue Moon</string>
+
+    <!-- player screen -->
     <string name="player_duration_empty">00:00:00</string>
     <string name="player_duration_format">%02d:%02d:%02d</string>
 </resources>

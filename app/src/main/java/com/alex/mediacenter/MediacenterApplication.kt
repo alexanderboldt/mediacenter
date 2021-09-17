@@ -14,15 +14,11 @@ class MediaCenterApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        setup()
-    }
-
-    // ----------------------------------------------------------------------------
-
-    private fun setup() {
         setupTimber()
         setupKoin()
     }
+
+    // ----------------------------------------------------------------------------
 
     private fun setupTimber() {
         if (!BuildConfig.DEBUG) return

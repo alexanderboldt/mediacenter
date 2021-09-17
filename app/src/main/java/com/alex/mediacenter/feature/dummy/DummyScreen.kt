@@ -5,7 +5,9 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.alex.mediacenter.R
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -19,7 +21,8 @@ fun DummyScreen() {
                 .padding(bottom = 32.dp)
                 .height(75.dp)
                 .fillMaxWidth()) {
-            Text(text = "Release Player")
+
+            Text(text = stringResource(id = R.string.dummy_release_player))
         }
 
         Button(
@@ -28,7 +31,7 @@ fun DummyScreen() {
                 .padding(bottom = 16.dp)
                 .height(75.dp)
                 .fillMaxWidth()) {
-            Text(text = "Lateline")
+            Text(text = stringResource(id = R.string.dummy_lateline))
         }
 
         Button(
@@ -37,7 +40,7 @@ fun DummyScreen() {
                 .padding(bottom = 16.dp)
                 .height(75.dp)
                 .fillMaxWidth()) {
-            Text(text = "Blue Moon")
+            Text(text = stringResource(id = R.string.dummy_blue_moon))
         }
     }
 }
