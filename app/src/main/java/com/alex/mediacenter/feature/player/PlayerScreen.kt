@@ -20,9 +20,7 @@ import org.koin.androidx.compose.getViewModel
 
 @ExperimentalMaterialApi
 @Composable
-fun PlayerScreen(bottomSheetState: BottomSheetScaffoldState) {
-    val viewModel: PlayerViewModel = getViewModel()
-
+fun PlayerScreen(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerViewModel = getViewModel()) {
     Box(modifier = Modifier.fillMaxSize()) {
 
         // blurred background-image
@@ -31,39 +29,20 @@ fun PlayerScreen(bottomSheetState: BottomSheetScaffoldState) {
                  transformations(BlurTransformation(LocalContext.current, 10f, 10f))
             },
             contentDescription = null,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MineShaft),
+            modifier = Modifier.fillMaxSize().background(MineShaft),
             contentScale = ContentScale.Crop
         )
 
         Column {
-            PreviewPlayer(bottomSheetState)
-
-            Column(Modifier.padding(16.dp)) {
-                Image(
-                    painter = rememberImagePainter(viewModel.playerPreviewState.coverUrl),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxWidth(),
-                    contentScale = ContentScale.Crop
-                )
-                
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                    Text(text = viewModel.playerPreviewState.position, color = White)
-                    Text(text = viewModel.playerPreviewState.duration, color = White)
-                }
-            }
+            SmallPlayer(bottomSheetState)
+            BigPlayer()
         }
     }
 }
 
 @ExperimentalMaterialApi
 @Composable
-fun PreviewPlayer(bottomSheetState: BottomSheetScaffoldState) {
-    val viewModel: PlayerViewModel = getViewModel()
-
+fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerViewModel = getViewModel()) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .height(100.dp)) {
@@ -101,6 +80,25 @@ fun PreviewPlayer(bottomSheetState: BottomSheetScaffoldState) {
                 modifier = Modifier.size(50.dp),
                 contentScale = ContentScale.Crop
             )
+        }
+    }
+}
+
+@Composable
+fun BigPlayer(viewModel: PlayerViewModel = getViewModel()) {
+    Column(Modifier.padding(16.dp)) {
+        Image(
+            painter = rememberImagePainter(viewModel.playerPreviewState.coverUrl),
+            contentDescription = null,
+            modifier = Modifier.fillMaxWidth(),
+            contentScale = ContentScale.Crop
+        )
+
+        Spacer(modifier = Modifier.size(8.dp))
+
+        Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+            Text(text = viewModel.playerPreviewState.position, color = White)
+            Text(text = viewModel.playerPreviewState.duration, color = White)
         }
     }
 }

@@ -4,10 +4,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-apply {
-    plugin("kotlin-android")
-}
-
 android {
     compileSdk = Config.sdk
 

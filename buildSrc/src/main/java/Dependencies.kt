@@ -8,7 +8,7 @@ object Config {
 
 object Deps {
     object Kotlin {
-        const val version = "1.5.10"
+        const val version = "1.5.21"
         const val stdLib = "org.jetbrains.kotlin:kotlin-stdlib:$version"
     }
 
@@ -18,7 +18,7 @@ object Deps {
         const val splashScreen = "androidx.core:core-splashscreen:1.0.0-alpha01"
 
         object Compose {
-            const val version = "1.0.0"
+            const val version = "1.0.2"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
