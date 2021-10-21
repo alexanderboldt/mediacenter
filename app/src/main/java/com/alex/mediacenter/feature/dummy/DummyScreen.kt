@@ -9,11 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.alex.mediacenter.R
+import com.google.accompanist.insets.statusBarsHeight
+import com.google.accompanist.insets.statusBarsPadding
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun DummyScreen(viewModel: DummyViewModel = getViewModel()) {
-    Column(modifier = Modifier.padding(16.dp)) {
+    Column(modifier = Modifier.statusBarsPadding().padding(16.dp)) {
         DummyButton(onClick = { viewModel.onClickReleasePlayer() }, string = R.string.dummy_release_player)
         DummyButton(onClick = { viewModel.onClickButtonOne() }, string = R.string.dummy_lateline)
         DummyButton(onClick = { viewModel.onClickButtonTwo() }, string = R.string.dummy_blue_moon)

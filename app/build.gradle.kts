@@ -101,6 +101,10 @@ dependencies {
 
     // 3rd-party libraries
 
+    // compose features
+    implementation(Deps.Libs.Accompanist.systemUiController)
+    implementation(Deps.Libs.Accompanist.insets)
+
     // audio
     implementation(Deps.Libs.exoplayer)
 

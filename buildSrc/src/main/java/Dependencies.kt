@@ -43,8 +43,9 @@ object Deps {
 
     object Libs {
         object Accompanist {
-            private val version = "v0.20.0"
-            val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version>"
+            private val version = "0.20.0"
+            val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
+            val insets = "com.google.accompanist:accompanist-insets:$version"
         }
 
         const val exoplayer = "com.google.android.exoplayer:exoplayer:2.15.1"
