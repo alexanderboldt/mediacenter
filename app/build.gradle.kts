@@ -89,6 +89,7 @@ dependencies {
     // androidx
     implementation(Deps.AndroidX.core)
     implementation(Deps.AndroidX.material)
+    implementation(Deps.AndroidX.splashScreen)
     implementation(Deps.AndroidX.LifeCycle.viewModelKtx)
 
     implementation(Deps.AndroidX.Compose.ui)
@@ -115,6 +116,4 @@ dependencies {
     // dependency injection
     implementation(Deps.Libs.Koin.koin)
     implementation(Deps.Libs.Koin.compose)
-
-    implementation(Deps.AndroidX.splashScreen)
 }

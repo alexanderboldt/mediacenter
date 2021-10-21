@@ -8,7 +8,7 @@ object Config {
 
 object Deps {
     object Kotlin {
-        const val version = "1.5.21"
+        const val version = "1.5.31"
         const val stdLib = "org.jetbrains.kotlin:kotlin-stdlib:$version"
     }
 
@@ -18,7 +18,7 @@ object Deps {
         const val splashScreen = "androidx.core:core-splashscreen:1.0.0-alpha01"
 
         object Compose {
-            const val version = "1.0.2"
+            const val version = "1.0.4"
             const val ui = "androidx.compose.ui:ui:$version"
             const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -42,7 +42,12 @@ object Deps {
     }
 
     object Libs {
-        const val exoplayer = "com.google.android.exoplayer:exoplayer:2.15.0"
+        object Accompanist {
+            private val version = "v0.20.0"
+            val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version>"
+        }
+
+        const val exoplayer = "com.google.android.exoplayer:exoplayer:2.15.1"
 
         const val timber = "com.jakewharton.timber:timber:5.0.1"
 
