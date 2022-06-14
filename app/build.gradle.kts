@@ -1,7 +1,6 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    application()
+    kotlin()
 }
 
 android {
@@ -50,10 +49,6 @@ android {
         }
     }
 
-    lint {
-        isAbortOnError = false
-    }
-
     buildFeatures {
         compose = true
     }
@@ -79,45 +74,45 @@ repositories {
 }
 
 dependencies {
-
-    // testing
-    testImplementation(Deps.Test.junit)
-
-    // android-testing
-    androidTestImplementation(Deps.Test.junit)
+    // kotlin-std-lib
+    implementation(Deps.Kotlin.stdLib)
 
     // androidx
-    implementation(Deps.AndroidX.core)
-    implementation(Deps.AndroidX.material)
-    implementation(Deps.AndroidX.splashScreen)
+    Deps.AndroidX.apply {
+        implementation(core)
+        implementation(material)
+    }
+
     implementation(Deps.AndroidX.LifeCycle.viewModelKtx)
 
-    implementation(Deps.AndroidX.Compose.ui)
-    implementation(Deps.AndroidX.Compose.uiTooling)
-    implementation(Deps.AndroidX.Compose.foundation)
-    implementation(Deps.AndroidX.Compose.material)
-
-    implementation(Deps.AndroidX.Navigation.compose)
+    // compose
+    Deps.AndroidX.Compose.apply {
+        implementation(ui)
+        implementation(uiTooling)
+        implementation(foundation)
+        implementation(material)
+    }
 
     // 3rd-party libraries
 
-    // compose features
-    implementation(Deps.Libs.Accompanist.systemUiController)
-    implementation(Deps.Libs.Accompanist.insets)
+    // Accompanist
+    Deps.Libs.Accompanist.apply {
+        implementation(systemUiController)
+        implementation(insets)
+    }
+
+    // navigation
+    implementation(Deps.AndroidX.Navigation.compose)
 
     // audio
     implementation(Deps.Libs.exoplayer)
 
-    // logging
-    implementation(Deps.Libs.timber)
-
     // image
     implementation(Deps.Libs.Coil.compose)
 
-    // leak-detection
-    debugImplementation(Deps.Libs.leakCanary)
-
     // dependency injection
-    implementation(Deps.Libs.Koin.koin)
-    implementation(Deps.Libs.Koin.compose)
+    Deps.Libs.Koin.apply {
+        implementation(koin)
+        implementation(compose)
+    }
 }

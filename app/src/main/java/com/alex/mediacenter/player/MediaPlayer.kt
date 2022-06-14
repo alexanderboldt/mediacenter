@@ -5,11 +5,10 @@ import com.google.android.exoplayer2.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import timber.log.Timber
 
 class MediaPlayer(context: Context) {
 
-    private var player: SimpleExoPlayer = SimpleExoPlayer.Builder(context).build()
+    private var player = ExoPlayer.Builder(context).build()
 
     private var jobPosition: Job? = null
 
@@ -19,11 +18,12 @@ class MediaPlayer(context: Context) {
     // ----------------------------------------------------------------------------
 
     data class State(
-            val type: Type = Type.IDLE,
-            val position: Long = 0,
-            val duration: Long = 0,
-            val title: String? = null,
-            val imageUrl: String? = null)
+        val type: Type = Type.IDLE,
+        val position: Long = 0,
+        val duration: Long = 0,
+        val title: String? = null,
+        val imageUrl: String? = null
+    )
 
     enum class Type {
         IDLE,
@@ -33,23 +33,27 @@ class MediaPlayer(context: Context) {
         END,
         ERROR
     }
-    
+
     // ----------------------------------------------------------------------------
 
     init {
-        player.addListener(object: Player.Listener {
+        player.addListener(object : Player.Listener {
             override fun onPlayerError(error: PlaybackException) {
                 _currentState.value = _currentState.value.copy(type = Type.ERROR)
 
                 disposePosition()
 
-                Timber.d(_currentState.value.toString())
+                println(_currentState.value.toString())
             }
 
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 _currentState.value = when (playbackState) {
                     Player.STATE_IDLE -> _currentState.value.copy(type = Type.IDLE)
-                    Player.STATE_BUFFERING -> _currentState.value.copy(type = Type.BUFFER, position = player.currentPosition, duration = player.duration)
+                    Player.STATE_BUFFERING -> _currentState.value.copy(
+                        type = Type.BUFFER,
+                        position = player.currentPosition,
+                        duration = player.duration
+                    )
                     Player.STATE_READY -> {
                         when (playWhenReady) {
                             true -> _currentState.value.copy(type = Type.PLAY, duration = player.duration)
@@ -62,7 +66,7 @@ class MediaPlayer(context: Context) {
 
                 if (playbackState == Player.STATE_READY && playWhenReady) observePosition() else disposePosition()
 
-                Timber.d(currentState.toString())
+                println(currentState.toString())
             }
         })
     }
@@ -104,7 +108,7 @@ class MediaPlayer(context: Context) {
 
                 delay(1_000)
 
-                Timber.d(currentState.toString())
+                println(currentState.toString())
             }
         }
     }

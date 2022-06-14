@@ -1,6 +1,5 @@
 package com.alex.mediacenter.feature.player
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -9,11 +8,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
-import coil.transform.BlurTransformation
+import coil.compose.AsyncImage
 import com.alex.mediacenter.R
 import com.alex.mediacenter.ui.theme.*
 import org.koin.androidx.compose.getViewModel
@@ -23,11 +20,9 @@ import org.koin.androidx.compose.getViewModel
 fun PlayerScreen(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerViewModel = getViewModel()) {
     Box(modifier = Modifier.fillMaxSize()) {
 
-        // blurred background-image
-        Image(
-            painter = rememberImagePainter(viewModel.playerPreviewState.coverUrl) {
-                 transformations(BlurTransformation(LocalContext.current, 10f, 10f))
-            },
+        // todo: make the image blurred
+        AsyncImage(
+            model = viewModel.playerPreviewState.coverUrl,
             contentDescription = null,
             modifier = Modifier.fillMaxSize().background(MineShaft),
             contentScale = ContentScale.Crop
@@ -74,8 +69,8 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVie
 
             Spacer(modifier = Modifier.size(8.dp))
 
-            Image(
-                painter = rememberImagePainter(viewModel.playerPreviewState.coverUrl),
+            AsyncImage(
+                model = viewModel.playerPreviewState.coverUrl,
                 contentDescription = null,
                 modifier = Modifier.size(50.dp),
                 contentScale = ContentScale.Crop
@@ -87,8 +82,8 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVie
 @Composable
 fun BigPlayer(viewModel: PlayerViewModel = getViewModel()) {
     Column(Modifier.padding(16.dp)) {
-        Image(
-            painter = rememberImagePainter(viewModel.playerPreviewState.coverUrl),
+        AsyncImage(
+            model = viewModel.playerPreviewState.coverUrl,
             contentDescription = null,
             modifier = Modifier.fillMaxWidth(),
             contentScale = ContentScale.Crop

@@ -9,12 +9,12 @@ import com.alex.mediacenter.R
 import com.alex.mediacenter.feature.base.ResourceProvider
 import com.alex.mediacenter.feature.player.model.UiModelPlayerPreview
 import com.alex.mediacenter.player.MediaPlayer
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     private val mediaPlayer: MediaPlayer,
-    private val resourceProvider: ResourceProvider) : ViewModel() {
+    private val resourceProvider: ResourceProvider
+) : ViewModel() {
 
     private val durationEmpty by lazy { resourceProvider.getString(R.string.player_duration_empty) }
     private val durationFormat by lazy { resourceProvider.getString(R.string.player_duration_format) }
