@@ -58,22 +58,13 @@ class PlayerViewModel(
                             false,
                             state.title ?: "",
                             calculateProgress(state.position, state.duration),
-                            state.imageUrl,
+                            null, //state.imageUrl
                             convertTimestampToString(state.position),
                             convertTimestampToString(state.duration)
                         )
                     }
                     MediaPlayer.Type.PAUSE, MediaPlayer.Type.END -> {
                         playerPreviewState = playerPreviewState.copy(showPlayButton = true)
-                    }
-                    MediaPlayer.Type.ERROR -> {
-                        playerPreviewState = UiModelPlayerPreview(
-                            true,
-                            "",
-                            0f,
-                            null,
-                            durationEmpty,
-                            durationEmpty)
                     }
                 }
             }

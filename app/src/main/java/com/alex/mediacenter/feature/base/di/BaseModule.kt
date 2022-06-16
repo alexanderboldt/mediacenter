@@ -1,9 +1,11 @@
 package com.alex.mediacenter.feature.base.di
 
 import com.alex.mediacenter.feature.base.ResourceProvider
+import com.alexstyl.warden.Warden
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-val resourceProviderModule = module {
+val baseModule = module {
     single { ResourceProvider(androidContext()) }
+    factory { Warden.with(androidContext()) }
 }

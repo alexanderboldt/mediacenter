@@ -115,4 +115,6 @@ dependencies {
         implementation(koin)
         implementation(compose)
     }
+
+    implementation("com.alexstyl:warden:1.0.0-alpha2")
 }
