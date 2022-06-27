@@ -93,6 +93,14 @@ class MediaPlayer(context: Context) {
         player.seekTo(position)
     }
 
+    fun previous() {
+        player.seekToPreviousMediaItem()
+    }
+
+    fun next() {
+        player.seekToNextMediaItem()
+    }
+
     fun release() {
         player.stop()
     }
