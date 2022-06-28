@@ -3,10 +3,9 @@ package com.alex.mediacenter.feature.player
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -24,7 +23,9 @@ fun PlayerScreen(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVi
         AsyncImage(
             model = viewModel.playerPreviewState.coverUrl,
             contentDescription = null,
-            modifier = Modifier.fillMaxSize().background(MineShaft),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MineShaft),
             contentScale = ContentScale.Crop
         )
 
@@ -38,26 +39,61 @@ fun PlayerScreen(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVi
 @ExperimentalMaterialApi
 @Composable
 fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerViewModel = getViewModel()) {
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .height(100.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp)
+    ) {
 
-        LinearProgressIndicator(
-            viewModel.playerPreviewState.progress,
-            modifier = Modifier.fillMaxWidth(),
-            color = White,
-            backgroundColor = Color(0x33ffffff)
+        var sliderPosition by remember { mutableStateOf(0f) }
+        var isSliderInteracting by remember { mutableStateOf(false) }
+
+        Slider(
+            value = if (isSliderInteracting) sliderPosition else viewModel.playerPreviewState.progress,
+            valueRange = 0f..viewModel.playerPreviewState.duration,
+            onValueChange = {
+                isSliderInteracting = true
+                sliderPosition = it
+            },
+            onValueChangeFinished = {
+                viewModel.onSeek(sliderPosition)
+                isSliderInteracting = false
+            }
         )
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(8.dp)
+            modifier = Modifier.fillMaxHeight().padding(8.dp)
         ) {
+            IconButton(
+                onClick = { viewModel.onClickPrevious() },
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(75.dp)
+            ) {
+                Icon(
+                    painter = painterResource(android.R.drawable.ic_media_previous),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    tint = White
+                )
+            }
+
             when (viewModel.playerPreviewState.showPlayButton) {
                 true -> PlayPauseButton(true) { viewModel.onClickPlay() }
                 false -> PlayPauseButton(false) { viewModel.onClickPause() }
+            }
+
+            IconButton(
+                onClick = { viewModel.onClickNext() },
+                modifier = Modifier.fillMaxHeight().width(75.dp)
+            ) {
+                Icon(
+                    painter = painterResource(android.R.drawable.ic_media_next),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    tint = White
+                )
             }
 
             Spacer(modifier = Modifier.size(8.dp))
@@ -65,7 +101,8 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVie
             Text(
                 text = viewModel.playerPreviewState.title,
                 modifier = Modifier.weight(1f),
-                color = White)
+                color = White
+            )
 
             Spacer(modifier = Modifier.size(8.dp))
 
@@ -92,8 +129,8 @@ fun BigPlayer(viewModel: PlayerViewModel = getViewModel()) {
         Spacer(modifier = Modifier.size(8.dp))
 
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-            Text(text = viewModel.playerPreviewState.position, color = White)
-            Text(text = viewModel.playerPreviewState.duration, color = White)
+            Text(text = viewModel.playerPreviewState.positionFormatted, color = White)
+            Text(text = viewModel.playerPreviewState.durationFormatted, color = White)
         }
     }
 }

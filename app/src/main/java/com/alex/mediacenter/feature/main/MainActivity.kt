@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.*
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.unit.dp
-import com.alex.mediacenter.feature.dummy.DummyScreen
 import com.alex.mediacenter.feature.player.PlayerScreen
+import com.alex.mediacenter.feature.selector.SelectorScreen
 import com.alex.mediacenter.ui.theme.*
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -35,8 +35,9 @@ class MainActivity : AppCompatActivity() {
                     BottomSheetScaffold(
                         sheetContent = { PlayerScreen(bottomSheetScaffoldState) },
                         scaffoldState = bottomSheetScaffoldState,
-                        sheetPeekHeight = 100.dp) {
-                        DummyScreen()
+                        sheetPeekHeight = 100.dp
+                    ) {
+                        SelectorScreen()
                     }
                 }
             }

@@ -24,6 +24,7 @@ class PlayerViewModel(
             true,
             "",
             0f,
+            0f,
             null,
             durationEmpty,
             durationEmpty
@@ -41,6 +42,7 @@ class PlayerViewModel(
                             true,
                             "",
                             0f,
+                            0f,
                             null,
                             durationEmpty,
                             durationEmpty
@@ -49,18 +51,19 @@ class PlayerViewModel(
                     MediaPlayer.Type.BUFFER -> {
                         playerPreviewState = playerPreviewState.copy(
                             showPlayButton = false,
-                            progress = calculateProgress(state.position, state.duration),
-                            position = convertTimestampToString(state.position)
+                            progress = state.position.toFloat(),
+                            positionFormatted = state.position.format()
                         )
                     }
                     MediaPlayer.Type.PLAY -> {
                         playerPreviewState = UiModelPlayerPreview(
                             false,
                             state.title ?: "",
-                            calculateProgress(state.position, state.duration),
-                            null, //state.imageUrl
-                            convertTimestampToString(state.position),
-                            convertTimestampToString(state.duration)
+                            state.position.toFloat(),
+                            state.duration.toFloat(),
+                            null,
+                            state.position.format(),
+                            state.duration.format()
                         )
                     }
                     MediaPlayer.Type.PAUSE, MediaPlayer.Type.END -> {
@@ -84,22 +87,23 @@ class PlayerViewModel(
         mediaPlayer.pause()
     }
 
-    fun seekStop(timestamp: Long) {
-        mediaPlayer.seek(timestamp)
+    fun onSeek(timestamp: Float) {
+        mediaPlayer.seek(timestamp.toLong())
+    }
+
+    fun onClickPrevious() {
+        mediaPlayer.previous()
+        mediaPlayer.resume()
+    }
+
+    fun onClickNext() {
+        mediaPlayer.next()
+        mediaPlayer.resume()
     }
 
     // ----------------------------------------------------------------------------
 
-    private fun convertTimestampToString(timestamp: Long): String {
-        return with(timestamp / 1000) {
-            String.format(durationFormat, this / 3600, (this % 3600) / 60, (this % 60))
-        }
-    }
-
-    private fun calculateProgress(position: Long, duration: Long): Float {
-        return when (position > 0 && duration > 0) {
-            true -> position.toFloat() / duration.toFloat()
-            false -> 0.0f
-        }
+    private fun Long.format() = with(this / 1000) {
+        String.format(durationFormat, this / 3600, (this % 3600) / 60, (this % 60))
     }
 }
