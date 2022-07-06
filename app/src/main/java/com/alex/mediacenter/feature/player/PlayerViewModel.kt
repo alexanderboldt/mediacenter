@@ -1,28 +1,25 @@
 package com.alex.mediacenter.feature.player
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alex.mediacenter.R
+import com.alex.mediacenter.feature.base.BaseViewModel
 import com.alex.mediacenter.feature.base.ResourceProvider
-import com.alex.mediacenter.feature.player.model.UiModelPlayerPreview
+import com.alex.mediacenter.feature.player.model.State
 import com.alex.mediacenter.player.MediaPlayer
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     private val mediaPlayer: MediaPlayer,
     private val resourceProvider: ResourceProvider
-) : ViewModel() {
+) : BaseViewModel<State, Unit>() {
 
     private val durationEmpty by lazy { resourceProvider.getString(R.string.player_duration_empty) }
     private val durationFormat by lazy { resourceProvider.getString(R.string.player_duration_format) }
 
     private val previousOrReplayThreshold = 5_000 // in milliseconds
 
-    var playerPreviewState: UiModelPlayerPreview by mutableStateOf(
-        UiModelPlayerPreview(
+    override val state = State(
+        State.PlayerPreview(
             true,
             "",
             0f,
@@ -30,17 +27,17 @@ class PlayerViewModel(
             null,
             durationEmpty,
             durationEmpty
-        ))
-        private set
+        )
+    )
 
     // ----------------------------------------------------------------------------
 
     init {
         viewModelScope.launch {
-            mediaPlayer.currentState.collect { state ->
-                when (state.type) {
+            mediaPlayer.currentState.collect { player ->
+                when (player.type) {
                     MediaPlayer.Type.IDLE -> {
-                        playerPreviewState = UiModelPlayerPreview(
+                        state.playerPreview = State.PlayerPreview(
                             true,
                             "",
                             0f,
@@ -51,25 +48,25 @@ class PlayerViewModel(
                         )
                     }
                     MediaPlayer.Type.BUFFER -> {
-                        playerPreviewState = playerPreviewState.copy(
+                        state.playerPreview = state.playerPreview.copy(
                             showPlayButton = false,
-                            progress = state.position.toFloat(),
-                            positionFormatted = state.position.format()
+                            progress = player.position.toFloat(),
+                            positionFormatted = player.position.format()
                         )
                     }
                     MediaPlayer.Type.PLAY -> {
-                        playerPreviewState = UiModelPlayerPreview(
+                        state.playerPreview = State.PlayerPreview(
                             false,
-                            state.title ?: "",
-                            state.position.toFloat(),
-                            state.duration.toFloat(),
+                            player.title ?: "",
+                            player.position.toFloat(),
+                            player.duration.toFloat(),
                             null,
-                            state.position.format(),
-                            state.duration.format()
+                            player.position.format(),
+                            player.duration.format()
                         )
                     }
                     MediaPlayer.Type.PAUSE, MediaPlayer.Type.END -> {
-                        playerPreviewState = playerPreviewState.copy(showPlayButton = true)
+                        state.playerPreview = state.playerPreview.copy(showPlayButton = true)
                     }
                 }
             }

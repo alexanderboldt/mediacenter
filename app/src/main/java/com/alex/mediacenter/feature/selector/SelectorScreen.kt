@@ -14,8 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.alex.mediacenter.R
-import com.alex.mediacenter.feature.selector.model.UiModelBase
-import com.alex.mediacenter.feature.selector.model.UiModelContent
+import com.alex.mediacenter.feature.selector.model.State
 import com.alex.mediacenter.ui.theme.MineShaft
 import org.koin.androidx.compose.getViewModel
 
@@ -25,16 +24,16 @@ fun SelectorScreen(viewModel: SelectorViewModel = getViewModel()) {
         viewModel.onClickBack()
     }
 
-    when (viewModel.contentState) {
-        UiModelContent.Items -> ItemsScreen()
-        UiModelContent.Empty -> EmptyScreen()
+    when (val state = viewModel.state.content) {
+        is State.Content.DirectoriesAndFiles -> ItemsScreen(state)
+        is State.Content.Empty -> EmptyScreen()
     }
 }
 
 // ----------------------------------------------------------------------------
 
 @Composable
-fun ItemsScreen() {
+fun ItemsScreen(directoriesAndFiles: State.Content.DirectoriesAndFiles) {
     val viewModel: SelectorViewModel = getViewModel()
 
     val listState = rememberLazyListState()
@@ -46,18 +45,18 @@ fun ItemsScreen() {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(
-                items = viewModel.directoryState,
+                items = directoriesAndFiles.items,
                 key = { it.hashCode() }
             ) { item ->
                 when (item) {
-                    is UiModelBase.UiModelDirectory -> {
+                    is State.DirectoryOrFileBase.Directory -> {
                         DirectoryOrFile(
                             onClick = { viewModel.onClickDirectory(item) },
                             isDirectory = true,
                             name = item.name
                         )
                     }
-                    is UiModelBase.UiModelFile -> {
+                    is State.DirectoryOrFileBase.File -> {
                         DirectoryOrFile(
                             onClick = { viewModel.onClickFile(item) },
                             isDirectory = false,
@@ -68,7 +67,7 @@ fun ItemsScreen() {
             }
         }
 
-        if (viewModel.showFabState) {
+        if (viewModel.state.isFabVisible) {
             FloatingActionButton(
                 onClick = { viewModel.onClickPlayFab() },
                 modifier = Modifier

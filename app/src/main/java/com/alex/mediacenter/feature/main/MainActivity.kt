@@ -18,6 +18,10 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 @ExperimentalMaterialApi
 class MainActivity : AppCompatActivity() {
 
+    private val peekHeight = 100.dp
+
+    // ----------------------------------------------------------------------------
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,9 +42,9 @@ class MainActivity : AppCompatActivity() {
                     BottomSheetScaffold(
                         sheetContent = { PlayerScreen(bottomSheetScaffoldState) },
                         scaffoldState = bottomSheetScaffoldState,
-                        sheetPeekHeight = 100.dp
+                        sheetPeekHeight = peekHeight
                     ) {
-                        Box(modifier = Modifier.padding(bottom = 100.dp)) {
+                        Box(modifier = Modifier.padding(bottom = peekHeight)) {
                             SelectorScreen()
                         }
                     }

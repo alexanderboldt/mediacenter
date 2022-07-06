@@ -21,7 +21,7 @@ fun PlayerScreen(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVi
 
         // todo: make the image blurred
         AsyncImage(
-            model = viewModel.playerPreviewState.coverUrl,
+            model = viewModel.state.playerPreview.coverUrl,
             contentDescription = null,
             modifier = Modifier
                 .fillMaxSize()
@@ -49,8 +49,8 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVie
         var isSliderInteracting by remember { mutableStateOf(false) }
 
         Slider(
-            value = if (isSliderInteracting) sliderPosition else viewModel.playerPreviewState.progress,
-            valueRange = 0f..viewModel.playerPreviewState.duration,
+            value = if (isSliderInteracting) sliderPosition else viewModel.state.playerPreview.progress,
+            valueRange = 0f..viewModel.state.playerPreview.duration,
             onValueChange = {
                 isSliderInteracting = true
                 sliderPosition = it
@@ -79,7 +79,7 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVie
                 )
             }
 
-            when (viewModel.playerPreviewState.showPlayButton) {
+            when (viewModel.state.playerPreview.showPlayButton) {
                 true -> PlayPauseButton(true) { viewModel.onClickPlay() }
                 false -> PlayPauseButton(false) { viewModel.onClickPause() }
             }
@@ -99,7 +99,7 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVie
             Spacer(modifier = Modifier.size(8.dp))
 
             Text(
-                text = viewModel.playerPreviewState.title,
+                text = viewModel.state.playerPreview.title,
                 modifier = Modifier.weight(1f),
                 color = White
             )
@@ -107,7 +107,7 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVie
             Spacer(modifier = Modifier.size(8.dp))
 
             AsyncImage(
-                model = viewModel.playerPreviewState.coverUrl,
+                model = viewModel.state.playerPreview.coverUrl,
                 contentDescription = null,
                 modifier = Modifier.size(50.dp),
                 contentScale = ContentScale.Crop
@@ -120,7 +120,7 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVie
 fun BigPlayer(viewModel: PlayerViewModel = getViewModel()) {
     Column(Modifier.padding(16.dp)) {
         AsyncImage(
-            model = viewModel.playerPreviewState.coverUrl,
+            model = viewModel.state.playerPreview.coverUrl,
             contentDescription = null,
             modifier = Modifier.fillMaxWidth(),
             contentScale = ContentScale.Crop
@@ -129,8 +129,8 @@ fun BigPlayer(viewModel: PlayerViewModel = getViewModel()) {
         Spacer(modifier = Modifier.size(8.dp))
 
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-            Text(text = viewModel.playerPreviewState.positionFormatted, color = White)
-            Text(text = viewModel.playerPreviewState.durationFormatted, color = White)
+            Text(text = viewModel.state.playerPreview.positionFormatted, color = White)
+            Text(text = viewModel.state.playerPreview.durationFormatted, color = White)
         }
     }
 }
