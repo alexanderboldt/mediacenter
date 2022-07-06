@@ -3,8 +3,11 @@ package com.alex.mediacenter.feature.main
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.alex.mediacenter.feature.player.PlayerScreen
 import com.alex.mediacenter.feature.selector.SelectorScreen
@@ -37,7 +40,9 @@ class MainActivity : AppCompatActivity() {
                         scaffoldState = bottomSheetScaffoldState,
                         sheetPeekHeight = 100.dp
                     ) {
-                        SelectorScreen()
+                        Box(modifier = Modifier.padding(bottom = 100.dp)) {
+                            SelectorScreen()
+                        }
                     }
                 }
             }

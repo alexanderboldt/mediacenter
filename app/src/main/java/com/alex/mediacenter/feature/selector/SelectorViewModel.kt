@@ -5,13 +5,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.alex.mediacenter.feature.selector.model.UiModelBase
+import com.alex.mediacenter.feature.selector.model.UiModelContent
 import com.alex.mediacenter.player.MediaPlayer
 import java.io.File
 
 class SelectorViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
 
+    var contentState: UiModelContent by mutableStateOf(UiModelContent.Empty)
+        private set
+
     var directoryState: List<UiModelBase> by mutableStateOf(emptyList())
         private set
+
+    var showFabState: Boolean by mutableStateOf(false)
+        private set
+
+    private val supportedExtensions = listOf("mp3", "m4a")
 
     private var currentDirectory = File("/sdcard/")
     private val currentDirectoriesOrFiles: List<File>?
@@ -20,6 +29,7 @@ class SelectorViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
                 .listFiles()
                 ?.toList()
                 ?.filterNot { it.isHidden }
+                ?.filter { it.isDirectory || it.extension in supportedExtensions }
         }
 
     // ----------------------------------------------------------------------------
@@ -69,5 +79,9 @@ class SelectorViewModel(private val mediaPlayer: MediaPlayer) : ViewModel() {
                     is UiModelBase.UiModelFile -> it.name
                 }
             } ?: emptyList()
+
+        contentState = if (directoryState.isNotEmpty()) UiModelContent.Items else UiModelContent.Empty
+
+        showFabState = currentDirectoriesOrFiles?.any { it.isFile } ?: false
     }
 }
