@@ -19,6 +19,8 @@ class PlayerViewModel(
     private val durationEmpty by lazy { resourceProvider.getString(R.string.player_duration_empty) }
     private val durationFormat by lazy { resourceProvider.getString(R.string.player_duration_format) }
 
+    private val previousOrReplayThreshold = 5_000 // in milliseconds
+
     var playerPreviewState: UiModelPlayerPreview by mutableStateOf(
         UiModelPlayerPreview(
             true,
@@ -92,7 +94,12 @@ class PlayerViewModel(
     }
 
     fun onClickPrevious() {
-        mediaPlayer.previous()
+        // either go to the previous song or start the current song from the beginning
+        when (mediaPlayer.currentState.value.position >= previousOrReplayThreshold) {
+            true -> mediaPlayer.seek(0)
+            false -> mediaPlayer.previous()
+        }
+
         mediaPlayer.resume()
     }
 

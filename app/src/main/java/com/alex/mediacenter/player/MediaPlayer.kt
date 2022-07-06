@@ -19,8 +19,8 @@ class MediaPlayer(context: Context) {
 
     data class State(
         val type: Type = Type.IDLE,
-        val position: Long = 0,
-        val duration: Long = 0,
+        val position: Long = 0, // in milliseconds
+        val duration: Long = 0, // in milliseconds
         val title: String = ""
     )
 
