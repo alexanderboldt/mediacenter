@@ -6,8 +6,10 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.alex.mediacenter.R
@@ -16,7 +18,7 @@ import org.koin.androidx.compose.getViewModel
 
 @ExperimentalMaterialApi
 @Composable
-fun PlayerScreen(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerViewModel = getViewModel()) {
+fun PlayerScreen(bottomSheetState: BottomSheetScaffoldState, peekHeight: Dp, viewModel: PlayerViewModel = getViewModel()) {
     Box(modifier = Modifier.fillMaxSize()) {
 
         // todo: make the image blurred
@@ -30,7 +32,7 @@ fun PlayerScreen(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVi
         )
 
         Column {
-            SmallPlayer(bottomSheetState)
+            SmallPlayer(bottomSheetState, peekHeight)
             BigPlayer()
         }
     }
@@ -38,16 +40,20 @@ fun PlayerScreen(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVi
 
 @ExperimentalMaterialApi
 @Composable
-fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerViewModel = getViewModel()) {
+fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, peekHeight: Dp, viewModel: PlayerViewModel = getViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(peekHeight)
     ) {
+        LinearProgressIndicator(
+            viewModel.state.playerPreview.progress / viewModel.state.playerPreview.duration,
+            modifier = Modifier.fillMaxWidth()
+        )
 
+        /*
         var sliderPosition by remember { mutableStateOf(0f) }
         var isSliderInteracting by remember { mutableStateOf(false) }
-
         Slider(
             value = if (isSliderInteracting) sliderPosition else viewModel.state.playerPreview.progress,
             valueRange = 0f..viewModel.state.playerPreview.duration,
@@ -60,11 +66,32 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVie
                 isSliderInteracting = false
             }
         )
+         */
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxHeight().padding(8.dp)
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(8.dp)
         ) {
+            AsyncImage(
+                model = viewModel.state.playerPreview.coverUrl,
+                contentDescription = null,
+                modifier = Modifier.size(50.dp),
+                contentScale = ContentScale.Crop
+            )
+
+            Spacer(Modifier.width(8.dp))
+
+            Text(
+                text = viewModel.state.playerPreview.title,
+                modifier = Modifier.weight(1f),
+                color = White
+            )
+
+            Spacer(Modifier.width(8.dp))
+
+            /*
             IconButton(
                 onClick = { viewModel.onClickPrevious() },
                 modifier = Modifier
@@ -78,15 +105,19 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVie
                     tint = White
                 )
             }
+             */
 
             when (viewModel.state.playerPreview.showPlayButton) {
                 true -> PlayPauseButton(true) { viewModel.onClickPlay() }
                 false -> PlayPauseButton(false) { viewModel.onClickPause() }
             }
 
+            /*
             IconButton(
                 onClick = { viewModel.onClickNext() },
-                modifier = Modifier.fillMaxHeight().width(75.dp)
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(75.dp)
             ) {
                 Icon(
                     painter = painterResource(android.R.drawable.ic_media_next),
@@ -95,23 +126,7 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, viewModel: PlayerVie
                     tint = White
                 )
             }
-
-            Spacer(modifier = Modifier.size(8.dp))
-
-            Text(
-                text = viewModel.state.playerPreview.title,
-                modifier = Modifier.weight(1f),
-                color = White
-            )
-
-            Spacer(modifier = Modifier.size(8.dp))
-
-            AsyncImage(
-                model = viewModel.state.playerPreview.coverUrl,
-                contentDescription = null,
-                modifier = Modifier.size(50.dp),
-                contentScale = ContentScale.Crop
-            )
+             */
         }
     }
 }

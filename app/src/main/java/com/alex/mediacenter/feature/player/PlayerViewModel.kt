@@ -60,7 +60,7 @@ class PlayerViewModel(
                             player.title ?: "",
                             player.position.toFloat(),
                             player.duration.toFloat(),
-                            null,
+                            "https://media.gq-magazin.de/photos/5c9cdb5a5d54aae4b6b4820f/4:3/w_1064,h_798,c_limit/deadpool-qur.jpg",
                             player.position.format(),
                             player.duration.format()
                         )

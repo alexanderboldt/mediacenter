@@ -72,10 +72,10 @@ fun ItemsScreen(directoriesAndFiles: State.Content.DirectoriesAndFiles) {
                 onClick = { viewModel.onClickPlayFab() },
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(8.dp)
+                    .padding(16.dp)
             ) {
                 Icon(
-                    painter = painterResource(id = android.R.drawable.ic_media_play),
+                    painter = painterResource(id = R.drawable.ic_play),
                     contentDescription = null,
                     tint = Color.White
                 )

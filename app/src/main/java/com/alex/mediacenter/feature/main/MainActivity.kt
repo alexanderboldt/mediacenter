@@ -18,7 +18,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 @ExperimentalMaterialApi
 class MainActivity : AppCompatActivity() {
 
-    private val peekHeight = 100.dp
+    private val peekHeight = 75.dp
 
     // ----------------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             MediaCenterTheme {
                 ProvideWindowInsets {
                     BottomSheetScaffold(
-                        sheetContent = { PlayerScreen(bottomSheetScaffoldState) },
+                        sheetContent = { PlayerScreen(bottomSheetScaffoldState, peekHeight) },
                         scaffoldState = bottomSheetScaffoldState,
                         sheetPeekHeight = peekHeight
                     ) {
