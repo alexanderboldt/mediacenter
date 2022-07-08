@@ -91,7 +91,6 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, peekHeight: Dp, view
 
             Spacer(Modifier.width(8.dp))
 
-            /*
             IconButton(
                 onClick = { viewModel.onClickPrevious() },
                 modifier = Modifier
@@ -105,19 +104,15 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, peekHeight: Dp, view
                     tint = White
                 )
             }
-             */
 
             when (viewModel.state.playerPreview.showPlayButton) {
                 true -> PlayPauseButton(true) { viewModel.onClickPlay() }
                 false -> PlayPauseButton(false) { viewModel.onClickPause() }
             }
 
-            /*
             IconButton(
                 onClick = { viewModel.onClickNext() },
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(75.dp)
+                modifier = Modifier.fillMaxHeight().width(75.dp)
             ) {
                 Icon(
                     painter = painterResource(android.R.drawable.ic_media_next),
@@ -126,7 +121,6 @@ fun SmallPlayer(bottomSheetState: BottomSheetScaffoldState, peekHeight: Dp, view
                     tint = White
                 )
             }
-             */
         }
     }
 }

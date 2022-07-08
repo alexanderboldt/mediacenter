@@ -73,9 +73,9 @@ class MediaPlayer(context: Context) {
 
     // ----------------------------------------------------------------------------
 
-    fun play(urls: List<String>) {
+    fun play(urls: List<String>, startIndex: Int) {
         player.apply {
-            setMediaItems(urls.map { MediaItem.fromUri(it) })
+            setMediaItems(urls.map { MediaItem.fromUri(it) }, startIndex, 0)
             playWhenReady = true
             prepare()
         }

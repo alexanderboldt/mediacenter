@@ -10,7 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.alex.mediacenter.R
@@ -64,21 +63,6 @@ fun ItemsScreen(directoriesAndFiles: State.Content.DirectoriesAndFiles) {
                         )
                     }
                 }
-            }
-        }
-
-        if (viewModel.state.isFabVisible) {
-            FloatingActionButton(
-                onClick = { viewModel.onClickPlayFab() },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_play),
-                    contentDescription = null,
-                    tint = Color.White
-                )
             }
         }
     }

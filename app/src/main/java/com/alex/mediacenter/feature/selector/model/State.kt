@@ -19,5 +19,4 @@ class State {
     // ----------------------------------------------------------------------------
 
     var content: Content by mutableStateOf(Content.Empty)
-    var isFabVisible: Boolean by mutableStateOf(false)
 }
