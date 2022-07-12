@@ -1,5 +1,7 @@
 package com.alex.mediacenter.feature.main
 
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.alex.mediacenter.feature.player.PlayerScreen
 import com.alex.mediacenter.feature.selector.SelectorScreen
+import com.alex.mediacenter.receiver.HeadsetReceiver
 import com.alex.mediacenter.ui.theme.*
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -24,6 +27,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        HeadsetReceiver.register(this)
 
         setContent {
             val systemUiController = rememberSystemUiController()
