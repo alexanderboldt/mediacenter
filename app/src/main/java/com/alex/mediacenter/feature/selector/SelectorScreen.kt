@@ -4,7 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -38,15 +38,13 @@ fun ItemsScreen(directoriesAndFiles: State.Content.DirectoriesAndFiles) {
     val listState = rememberLazyListState()
 
     Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(
-            state = listState,
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(
+        LazyColumn(state = listState) {
+            itemsIndexed(
                 items = directoriesAndFiles.items,
-                key = { it.hashCode() }
-            ) { item ->
+                key = { _, item -> item.hashCode() }
+            ) { index, item ->
+                if (index != 0) Divider(modifier = Modifier.padding(horizontal = 8.dp))
+
                 when (item) {
                     is State.DirectoryOrFileBase.Directory -> {
                         DirectoryOrFile(
@@ -72,8 +70,7 @@ fun ItemsScreen(directoriesAndFiles: State.Content.DirectoriesAndFiles) {
 fun DirectoryOrFile(onClick: () -> Unit, isDirectory: Boolean, name: String) {
     Row(modifier = Modifier
         .clickable(onClick = onClick)
-        .border(1.dp, MineShaft)
-        .padding(16.dp)
+        .padding(24.dp)
         .fillMaxWidth()
     ) {
         Icon(

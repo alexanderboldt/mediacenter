@@ -93,6 +93,14 @@ class MediaPlayer(context: Context) {
         player.seekTo(position)
     }
 
+    fun replay(time: Long) {
+        player.seekTo(_currentState.value.position - time)
+    }
+
+    fun forward(time: Long) {
+        player.seekTo(_currentState.value.position + time)
+    }
+
     fun previous() {
         player.seekToPreviousMediaItem()
     }

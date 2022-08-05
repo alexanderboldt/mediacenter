@@ -17,6 +17,7 @@ class PlayerViewModel(
     private val durationFormat by lazy { resourceProvider.getString(R.string.player_duration_format) }
 
     private val previousOrReplayThreshold = 5_000 // in milliseconds
+    private val seekBy = 10_000L // in milliseconds
 
     override val state = State(
         State.PlayerPreview(
@@ -24,7 +25,6 @@ class PlayerViewModel(
             "",
             0f,
             0f,
-            null,
             durationEmpty,
             durationEmpty
         )
@@ -42,7 +42,6 @@ class PlayerViewModel(
                             "",
                             0f,
                             0f,
-                            null,
                             durationEmpty,
                             durationEmpty
                         )
@@ -60,7 +59,6 @@ class PlayerViewModel(
                             player.title ?: "",
                             player.position.toFloat(),
                             player.duration.toFloat(),
-                            "https://media.gq-magazin.de/photos/5c9cdb5a5d54aae4b6b4820f/4:3/w_1064,h_798,c_limit/deadpool-qur.jpg",
                             player.position.format(),
                             player.duration.format()
                         )
@@ -103,6 +101,14 @@ class PlayerViewModel(
     fun onClickNext() {
         mediaPlayer.next()
         mediaPlayer.resume()
+    }
+
+    fun onClickReplay() {
+        mediaPlayer.replay(seekBy)
+    }
+
+    fun onClickForward() {
+        mediaPlayer.forward(seekBy)
     }
 
     // ----------------------------------------------------------------------------

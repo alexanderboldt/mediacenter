@@ -11,7 +11,6 @@ class State(initialPreview: PlayerPreview) {
         val title: String,
         val progress: Float,
         val duration: Float,
-        val coverUrl: String?,
         val positionFormatted: String,
         val durationFormatted: String
     )
