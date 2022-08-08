@@ -13,7 +13,6 @@ import com.alex.mediacenter.feature.player.PlayerScreen
 import com.alex.mediacenter.feature.selector.SelectorScreen
 import com.alex.mediacenter.receiver.HeadsetReceiver
 import com.alex.mediacenter.ui.theme.*
-import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @ExperimentalMaterialApi
@@ -32,8 +31,8 @@ class MainActivity : AppCompatActivity() {
             val systemUiController = rememberSystemUiController()
 
             SideEffect {
-                systemUiController.setSystemBarsColor(AquaDeep, false)
-                systemUiController.setNavigationBarColor(AquaDeep)
+                systemUiController.setSystemBarsColor(MineShaft, false)
+                systemUiController.setNavigationBarColor(MineShaft)
             }
 
             val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
@@ -41,15 +40,13 @@ class MainActivity : AppCompatActivity() {
             )
 
             MediaCenterTheme {
-                ProvideWindowInsets {
-                    BottomSheetScaffold(
-                        sheetContent = { PlayerScreen(bottomSheetScaffoldState, peekHeight) },
-                        scaffoldState = bottomSheetScaffoldState,
-                        sheetPeekHeight = peekHeight
-                    ) {
-                        Box(modifier = Modifier.padding(bottom = peekHeight)) {
-                            SelectorScreen()
-                        }
+                BottomSheetScaffold(
+                    sheetContent = { PlayerScreen(bottomSheetScaffoldState, peekHeight) },
+                    scaffoldState = bottomSheetScaffoldState,
+                    sheetPeekHeight = peekHeight
+                ) {
+                    Box(modifier = Modifier.padding(bottom = peekHeight)) {
+                        SelectorScreen(bottomSheetScaffoldState)
                     }
                 }
             }

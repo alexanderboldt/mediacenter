@@ -45,7 +45,6 @@ object Deps {
         object Accompanist {
             private const val version = "0.25.0"
             const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$version"
-            const val insets = "com.google.accompanist:accompanist-insets:$version"
         }
 
         object Coil {

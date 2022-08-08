@@ -17,9 +17,10 @@ import com.alex.mediacenter.feature.selector.model.State
 import com.alex.mediacenter.ui.theme.MineShaft
 import org.koin.androidx.compose.getViewModel
 
+@ExperimentalMaterialApi
 @Composable
-fun SelectorScreen(viewModel: SelectorViewModel = getViewModel()) {
-    BackHandler {
+fun SelectorScreen(bottomSheetState: BottomSheetScaffoldState, viewModel: SelectorViewModel = getViewModel()) {
+    BackHandler(bottomSheetState.bottomSheetState.isCollapsed) {
         viewModel.onClickBack()
     }
 

@@ -11,7 +11,7 @@ import java.io.File
 
 class SelectorViewModel(private val mediaPlayer: MediaPlayer, private val warden: Warden) : BaseViewModel<State, Unit>() {
 
-    private val supportedExtensions = listOf("mp3", "m4a")
+    private val supportedExtensions = listOf("mp3", "m4a", "flac")
 
     private var currentDirectory = File("/sdcard/")
     private val currentDirectoriesOrFiles: List<File>?

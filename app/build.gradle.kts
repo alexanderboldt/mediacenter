@@ -98,7 +98,6 @@ dependencies {
     // Accompanist
     Deps.Libs.Accompanist.apply {
         implementation(systemUiController)
-        implementation(insets)
     }
 
     // navigation

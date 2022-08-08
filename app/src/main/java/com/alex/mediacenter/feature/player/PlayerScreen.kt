@@ -1,5 +1,6 @@
 package com.alex.mediacenter.feature.player
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,15 +9,12 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.alex.mediacenter.R
 import com.alex.mediacenter.ui.theme.*
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @ExperimentalMaterialApi
@@ -26,6 +24,14 @@ fun PlayerScreen(
     peekHeight: Dp,
     viewModel: PlayerViewModel = getViewModel()
 ) {
+    val scope = rememberCoroutineScope()
+
+    BackHandler(bottomSheetState.bottomSheetState.isExpanded) {
+        scope.launch {
+            bottomSheetState.bottomSheetState.collapse()
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         BigPlayer()
 
@@ -136,8 +142,14 @@ fun BigPlayer(viewModel: PlayerViewModel = getViewModel()) {
         }
 
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-            Box(modifier = Modifier.size(100.dp).background(Amaranth).clickable { viewModel.onClickReplay() })
-            Box(modifier = Modifier.size(100.dp).background(Amaranth).clickable { viewModel.onClickForward() })
+            Box(modifier = Modifier
+                .size(100.dp)
+                .background(Amaranth)
+                .clickable { viewModel.onClickReplay() })
+            Box(modifier = Modifier
+                .size(100.dp)
+                .background(Amaranth)
+                .clickable { viewModel.onClickForward() })
         }
     }
 }
