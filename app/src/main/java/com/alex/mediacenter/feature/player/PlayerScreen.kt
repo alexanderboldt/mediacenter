@@ -5,6 +5,8 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -62,15 +64,15 @@ fun SmallPlayer(modifier: Modifier = Modifier, viewModel: PlayerViewModel = getV
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(8.dp)
+                .padding(horizontal = 16.dp, vertical = 8.dp)
         ) {
             Text(
-                text = viewModel.state.playerPreview.title,
+                text = viewModel.state.playerPreview.mediaItems?.get(viewModel.state.playerPreview.currentMediaItemIndex)?.title ?: "",
                 modifier = Modifier.weight(1f),
                 color = White
             )
 
-            Spacer(Modifier.width(8.dp))
+            Spacer(Modifier.width(16.dp))
 
             when (viewModel.state.playerPreview.showPlayButton) {
                 true -> PlayPauseButton(true) { viewModel.onClickPlay() }
@@ -151,6 +153,16 @@ fun BigPlayer(viewModel: PlayerViewModel = getViewModel()) {
                 .background(Amaranth)
                 .clickable { viewModel.onClickForward() })
         }
+
+        val urls = viewModel.state.playerPreview.mediaItems
+        if (urls != null) {
+            LazyColumn {
+                items(items = urls) { item ->
+                    Text(text = item.title, color = White)
+                    Spacer(modifier = Modifier.size(8.dp))
+                }
+            }
+        }
     }
 }
 
@@ -158,7 +170,7 @@ fun BigPlayer(viewModel: PlayerViewModel = getViewModel()) {
 fun PlayPauseButton(isPlayButton: Boolean, onClick: () -> Unit) {
     IconButton(
         onClick = onClick,
-        modifier = Modifier.size(75.dp)
+        modifier = Modifier.size(50.dp)
     ) {
         Icon(
             painter = painterResource(if (isPlayButton) R.drawable.ic_play else R.drawable.ic_pause),

@@ -5,5 +5,5 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val selectorModule = module {
-    viewModel { SelectorViewModel(get(), get()) }
+    viewModel { SelectorViewModel(get(), get(), get(), get()) }
 }

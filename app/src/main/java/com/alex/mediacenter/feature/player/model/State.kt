@@ -8,11 +8,16 @@ class State(initialPreview: PlayerPreview) {
 
     data class PlayerPreview(
         val showPlayButton: Boolean,
-        val title: String,
         val progress: Float,
         val duration: Float,
         val positionFormatted: String,
-        val durationFormatted: String
+        val durationFormatted: String,
+        val currentMediaItemIndex: Int,
+        val mediaItems: List<MediaItem>?
+    )
+
+    data class MediaItem(
+        val title: String
     )
 
     // ----------------------------------------------------------------------------

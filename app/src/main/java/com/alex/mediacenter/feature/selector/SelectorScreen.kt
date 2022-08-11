@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.alex.mediacenter.feature.selector
 
 import androidx.activity.compose.BackHandler
@@ -49,6 +51,7 @@ fun ItemsScreen(directoriesAndFiles: State.Content.DirectoriesAndFiles) {
                 when (item) {
                     is State.DirectoryOrFileBase.Directory -> {
                         DirectoryOrFile(
+                            onLongClick = {},
                             onClick = { viewModel.onClickDirectory(item) },
                             isDirectory = true,
                             name = item.name
@@ -56,6 +59,7 @@ fun ItemsScreen(directoriesAndFiles: State.Content.DirectoriesAndFiles) {
                     }
                     is State.DirectoryOrFileBase.File -> {
                         DirectoryOrFile(
+                            onLongClick = { viewModel.onLongClickFile(item) },
                             onClick = { viewModel.onClickFile(item) },
                             isDirectory = false,
                             name = item.name
@@ -68,9 +72,9 @@ fun ItemsScreen(directoriesAndFiles: State.Content.DirectoriesAndFiles) {
 }
 
 @Composable
-fun DirectoryOrFile(onClick: () -> Unit, isDirectory: Boolean, name: String) {
+fun DirectoryOrFile(onLongClick: () -> Unit, onClick: () -> Unit, isDirectory: Boolean, name: String) {
     Row(modifier = Modifier
-        .clickable(onClick = onClick)
+        .combinedClickable(onLongClick = onLongClick, onClick = onClick)
         .padding(24.dp)
         .fillMaxWidth()
     ) {

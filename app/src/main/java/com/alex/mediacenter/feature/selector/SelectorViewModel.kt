@@ -2,14 +2,22 @@ package com.alex.mediacenter.feature.selector
 
 import android.Manifest
 import androidx.lifecycle.viewModelScope
+import com.alex.mediacenter.R
 import com.alex.mediacenter.feature.base.BaseViewModel
+import com.alex.mediacenter.feature.base.ResourceProvider
+import com.alex.mediacenter.feature.base.WidgetManager
 import com.alex.mediacenter.feature.selector.model.State
 import com.alex.mediacenter.player.MediaPlayer
 import com.alexstyl.warden.Warden
 import kotlinx.coroutines.launch
 import java.io.File
 
-class SelectorViewModel(private val mediaPlayer: MediaPlayer, private val warden: Warden) : BaseViewModel<State, Unit>() {
+class SelectorViewModel(
+    private val widgetManager: WidgetManager,
+    private val resourceProvider: ResourceProvider,
+    private val mediaPlayer: MediaPlayer,
+    private val warden: Warden,
+) : BaseViewModel<State, Unit>() {
 
     private val supportedExtensions = listOf("mp3", "m4a", "flac")
 
@@ -48,6 +56,11 @@ class SelectorViewModel(private val mediaPlayer: MediaPlayer, private val warden
     fun onClickDirectory(directory: State.DirectoryOrFileBase.Directory) {
         currentDirectory = File(directory.path)
         updateDirectoryState()
+    }
+
+    fun onLongClickFile(file: State.DirectoryOrFileBase.File) {
+        mediaPlayer.add(file.path)
+        widgetManager.showToast(resourceProvider.getString(R.string.selector_song_added_to_playlist))
     }
 
     fun onClickFile(file: State.DirectoryOrFileBase.File) {

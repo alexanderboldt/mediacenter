@@ -6,6 +6,7 @@ import com.alex.mediacenter.feature.base.BaseViewModel
 import com.alex.mediacenter.feature.base.ResourceProvider
 import com.alex.mediacenter.feature.player.model.State
 import com.alex.mediacenter.player.MediaPlayer
+import com.alex.mediacenter.player.MediaType
 import kotlinx.coroutines.launch
 
 class PlayerViewModel(
@@ -22,11 +23,12 @@ class PlayerViewModel(
     override val state = State(
         State.PlayerPreview(
             true,
-            "",
             0f,
             0f,
             durationEmpty,
-            durationEmpty
+            durationEmpty,
+            0,
+            null
         )
     )
 
@@ -35,36 +37,43 @@ class PlayerViewModel(
     init {
         viewModelScope.launch {
             mediaPlayer.currentState.collect { player ->
-                when (player.type) {
-                    MediaPlayer.Type.IDLE -> {
+                when (player.mediaType) {
+                    MediaType.IDLE -> {
                         state.playerPreview = State.PlayerPreview(
                             true,
-                            "",
                             0f,
                             0f,
                             durationEmpty,
-                            durationEmpty
+                            durationEmpty,
+                            0,
+                            null
                         )
                     }
-                    MediaPlayer.Type.BUFFER -> {
+                    MediaType.BUFFER -> {
                         state.playerPreview = state.playerPreview.copy(
                             showPlayButton = false,
                             progress = player.position.toFloat(),
-                            positionFormatted = player.position.format()
+                            positionFormatted = player.position.format(),
+                            currentMediaItemIndex = player.currentMediaItemIndex,
+                            mediaItems = player.mediaItems?.map { State.MediaItem(it.title) }
                         )
                     }
-                    MediaPlayer.Type.PLAY -> {
+                    MediaType.PLAY -> {
                         state.playerPreview = State.PlayerPreview(
                             false,
-                            player.title ?: "",
                             player.position.toFloat(),
                             player.duration.toFloat(),
                             player.position.format(),
-                            player.duration.format()
+                            player.duration.format(),
+                            currentMediaItemIndex = player.currentMediaItemIndex,
+                            mediaItems = player.mediaItems?.map { State.MediaItem(it.title) }
                         )
                     }
-                    MediaPlayer.Type.PAUSE, MediaPlayer.Type.END -> {
-                        state.playerPreview = state.playerPreview.copy(showPlayButton = true)
+                    MediaType.PAUSE, MediaType.END -> {
+                        state.playerPreview = state.playerPreview.copy(
+                            showPlayButton = true,
+                            mediaItems = player.mediaItems?.map { State.MediaItem(it.title) }
+                        )
                     }
                 }
             }
@@ -74,7 +83,7 @@ class PlayerViewModel(
     // ----------------------------------------------------------------------------
 
     fun onClickPlay() {
-        if (mediaPlayer.currentState.value.type == MediaPlayer.Type.END) {
+        if (mediaPlayer.currentState.value.mediaType == MediaType.END) {
             mediaPlayer.seek(0)
         }
         mediaPlayer.resume()
